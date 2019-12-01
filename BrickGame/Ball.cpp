@@ -2,7 +2,7 @@
 
 Ball::Ball()
 {
-	mSpeed = 500;
+	mSpeed = 1000;
 	mDirection.x = sqrt(2) / 2;
 	mDirection.y = sqrt(2) / 2;
 	mDirection = normalizeVector(mDirection);

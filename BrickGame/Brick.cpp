@@ -6,6 +6,8 @@ Brick::Brick()
 	setOutlineThickness(-2);
 	setFillColor(sf::Color::Transparent);
 	setSize(sf::Vector2f(mWidth * WinWidthRatio / wallWidth, mHeight * WinHeightRatio / wallHeight));
+	//50
+	//26.6
 }
 
 void Brick::checkCollision(Ball& ball)
@@ -44,7 +46,35 @@ void Brick::checkCollision(Ball& ball)
 	ball.setDirection(dir);
 }
 
+int Brick::getHP()
+{
+	return HP;
+}
+
+int Brick::getScore()
+{
+	return score;
+}
+
 void Brick::damage()
 {
 	HP--;
+	if (HP <= hpBar / 2.f)
+		changeTexture();
+}
+
+void Brick::changeTexture()
+{
+	if (HP != 0)
+	{
+		setTexture(&brickTex[1]);
+	}
+}
+
+void Brick::paddleAction(Paddle& player)
+{
+	if (HP == 0)
+	{
+		player.setScore(player.getScore() + getScore());
+	}
 }

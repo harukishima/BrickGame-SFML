@@ -7,6 +7,7 @@
 #include"MBrick.h"
 #include"HBrick.h"
 #include"Ball.h"
+#include"Paddle.h"
 
 
 class BrickGame
@@ -18,7 +19,7 @@ public:
 
 private:
 	void processEvents();
-	//void handleInput(sf::Keyboard::Key key, bool isPressed);
+	void handleInput(sf::Keyboard::Key key, bool isPressed);
 	void update(sf::Time); //Change object
 	void render(); //Draw object
 	void createWall();
@@ -26,11 +27,13 @@ private:
 	void randomizeBrickMap();
 	void checkWallCollision();
 	void updateBall(sf::Time);
+	void updatePaddle(sf::Time);
 
 	sf::RenderWindow mWindow;
 	Ball newBall;
-	const sf::Time TimePerFrame = sf::seconds(1.f / 60.f);
+	const sf::Time TimePerFrame = sf::seconds(1.f / 144.f);
 	Brick *Wall[wallWidth * wallHeight];
+	Paddle player;
 	int brickMap[wallHeight * wallWidth];
 	/*{
 		1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,

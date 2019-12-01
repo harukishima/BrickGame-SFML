@@ -4,18 +4,25 @@
 #include<SFML/Graphics.hpp>
 #include"Global.h"
 #include"Ball.h"
+#include"Paddle.h"
 
 class Brick : 
 	public sf::RectangleShape
 {
 protected:
-	int HP = 0;
+	int HP = 0, hpBar = 0;
 	int score = 0;
+	sf::Texture brickTex[2];
 public:
 	Brick();
 	bool isAlive(){return HP;}
 	void checkCollision(Ball&);
+	int getHP();
+	int getScore();
 	void damage();
+	void changeTexture();
+	void paddleAction(Paddle&);
+	//void ballAction();
 	virtual ~Brick() = default;
 };
 

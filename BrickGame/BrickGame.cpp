@@ -6,6 +6,7 @@ BrickGame::BrickGame() :
 {
 	randomizeBrickMap();
 	createWall();
+	
 }
 
 BrickGame::~BrickGame()
@@ -43,13 +44,25 @@ void BrickGame::processEvents()
 		case sf::Event::Closed:
 			mWindow.close();
 			break;
-		/*case sf::Event::KeyPressed:
+		case sf::Event::KeyPressed:
 			handleInput(ev.key.code, true);
 			break;
 		case sf::Event::KeyReleased:
 			handleInput(ev.key.code, false);
-			break;*/
+			break;
 		}
+	}
+}
+
+void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
+{
+	if (key == sf::Keyboard::Left)
+	{
+		player.setLeftState(isPressed);
+	}
+	if (key == sf::Keyboard::Right)
+	{
+		player.setRightState(isPressed);
 	}
 }
 
@@ -57,12 +70,23 @@ void BrickGame::update(sf::Time TimePerFrame)
 {
 	checkWallCollision();
 	updateBall(TimePerFrame);
+	player.processMove();
+	player.checkCollision(newBall);
+	updatePaddle(TimePerFrame);
+	player.animate();
 	for (int i = 0; i < wallHeight; i++)
 	{
 		for (int j = 0; j < wallWidth; j++)
 		{
 			if (Wall[i * wallWidth + j] > 0 && Wall[i * wallWidth + j]->isAlive())
+			{
 				Wall[i * wallWidth + j]->checkCollision(newBall);
+				Wall[i * wallWidth + j]->paddleAction(player);
+				/*if (Wall[i * wallWidth + j]->getHP() == 0)
+				{
+					player.setScore(player.getScore() + Wall[i * wallWidth + j]->getScore());
+				}*/
+			}
 		}
 	}
 }
@@ -79,6 +103,7 @@ void BrickGame::render()
 		}
 	}
 	mWindow.draw(newBall);
+	mWindow.draw(player);
 	mWindow.display();
 }
 
@@ -120,7 +145,7 @@ void BrickGame::createWall()
 				break;
 			}
 			sf::Vector2f tmp = Wall[i * wallWidth + j]->getSize();
-			Wall[i * wallWidth + j]->setPosition(sf::Vector2f(tmp.x * j, tmp.y * i));
+			Wall[i * wallWidth + j]->setPosition(sf::Vector2f(tmp.x * j, board + tmp.y * i));
 		}
 	}
 }
@@ -153,15 +178,15 @@ void BrickGame::checkWallCollision()
 		dir.x = -dir.x;
 		pos.x = newBall.getRadius();
 	}
-	if (pos.y - newBall.getRadius() <= 0)
+	if (pos.y - board - newBall.getRadius() <= 0)
 	{
 		dir.y = -dir.y;
-		pos.y = newBall.getRadius();
+		pos.y = board + newBall.getRadius();
 	}
-	if (pos.x + newBall.getRadius() >= mWidth)
+	if (pos.x + newBall.getRadius() >= mWidth * WinWidthRatio)
 	{
 		dir.x = -dir.x;
-		pos.x = mWidth - newBall.getRadius();
+		pos.x = mWidth * WinWidthRatio - newBall.getRadius();
 	}
 	if (pos.y + newBall.getRadius() >= mHeight) //For testing purpose
 	{
@@ -178,3 +203,12 @@ void BrickGame::updateBall(sf::Time TimePerFrame)
 	movement = newBall.getDirection() * newBall.getSpeed() * TimePerFrame.asSeconds();
 	newBall.move(movement);
 }
+
+void BrickGame::updatePaddle(sf::Time TimePerFrame)
+{
+	sf::Vector2f movement;
+	movement = player.getDirection() * player.getSpeed() * TimePerFrame.asSeconds();
+	player.move(movement);
+}
+
+
