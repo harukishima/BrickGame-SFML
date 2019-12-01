@@ -10,6 +10,7 @@ class NBrick :
 public:
 	NBrick();
 	virtual ~NBrick() = default;
+	virtual int getType() { return 1; }
 };
 
 

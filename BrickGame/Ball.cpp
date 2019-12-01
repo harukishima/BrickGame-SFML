@@ -9,4 +9,6 @@ Ball::Ball()
 	setRadius(10);
 	setOrigin(getRadius(), getRadius());
 	setPosition(mWidth / 2.f, mHeight * (3.f / 4.f));
+	tex.loadFromFile("resource\\58-Breakout-Tiles.png");
+	setTexture(&tex);
 }

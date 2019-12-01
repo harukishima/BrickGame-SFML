@@ -24,6 +24,7 @@ public:
 	void paddleAction(Paddle&);
 	//void ballAction();
 	virtual ~Brick() = default;
+	virtual int getType() { return 0; }
 };
 
 

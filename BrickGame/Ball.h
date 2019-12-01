@@ -8,6 +8,8 @@
 
 class Ball : public sf::CircleShape, public MoveableObject
 {
+private:
+	sf::Texture tex;
 public:
 	Ball();
 	virtual ~Ball() = default;

@@ -4,6 +4,10 @@
 BrickGame::BrickGame() :
 	mWindow(sf::VideoMode(mWidth, mHeight), "Brick Game")
 {
+	font.loadFromFile("resource\\Retro Gaming.ttf");
+	scoreText.setFont(font);
+	scoreText.setCharacterSize(30);
+	scoreText.setPosition(sf::Vector2f(50, 10));
 	randomizeBrickMap();
 	createWall();
 	
@@ -74,6 +78,7 @@ void BrickGame::update(sf::Time TimePerFrame)
 	player.checkCollision(newBall);
 	updatePaddle(TimePerFrame);
 	player.animate();
+	scoreText.setString("Score: " + std::to_string(player.getScore()));
 	for (int i = 0; i < wallHeight; i++)
 	{
 		for (int j = 0; j < wallWidth; j++)
@@ -82,6 +87,13 @@ void BrickGame::update(sf::Time TimePerFrame)
 			{
 				Wall[i * wallWidth + j]->checkCollision(newBall);
 				Wall[i * wallWidth + j]->paddleAction(player);
+				if (Wall[i * wallWidth + j]->getHP() == 0)
+				{
+					sf::Vector2f tmp(Wall[i * wallWidth + j]->getPosition());
+					delete Wall[i * wallWidth + j];
+					Wall[i * wallWidth + j] = new Brick;
+					Wall[i * wallWidth + j]->setPosition(tmp);
+				}
 				/*if (Wall[i * wallWidth + j]->getHP() == 0)
 				{
 					player.setScore(player.getScore() + Wall[i * wallWidth + j]->getScore());
@@ -104,6 +116,7 @@ void BrickGame::render()
 	}
 	mWindow.draw(newBall);
 	mWindow.draw(player);
+	mWindow.draw(scoreText);
 	mWindow.display();
 }
 

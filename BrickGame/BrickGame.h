@@ -3,6 +3,7 @@
 
 #include<SFML/Graphics.hpp>
 #include<ctime>
+#include<string>
 #include"NBrick.h"
 #include"MBrick.h"
 #include"HBrick.h"
@@ -34,6 +35,8 @@ private:
 	const sf::Time TimePerFrame = sf::seconds(1.f / 144.f);
 	Brick *Wall[wallWidth * wallHeight];
 	Paddle player;
+	sf::Text scoreText;
+	sf::Font font;
 	int brickMap[wallHeight * wallWidth];
 	/*{
 		1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
