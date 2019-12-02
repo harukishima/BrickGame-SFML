@@ -2,6 +2,7 @@
 #define __BALL_H__
 
 #include<SFML/Graphics.hpp>
+#include<random>
 #include"MoveableObject.h"
 #include"Global.h"
 
@@ -13,6 +14,7 @@ private:
 public:
 	Ball();
 	virtual ~Ball() = default;
+	virtual void defaultState();
 };
 
 

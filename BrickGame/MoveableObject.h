@@ -12,6 +12,7 @@ protected:
 public:
 	MoveableObject();
 	virtual ~MoveableObject() = default;
+	virtual void defaultState() = 0;
 	void setSpeed(float);
 	void setDirection(float, float);
 	void setDirection(const sf::Vector2f&);

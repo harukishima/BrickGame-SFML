@@ -4,6 +4,7 @@
 #include<SFML/Graphics.hpp>
 #include<ctime>
 #include<string>
+#include<random>
 #include"NBrick.h"
 #include"MBrick.h"
 #include"HBrick.h"
@@ -32,6 +33,9 @@ private:
 
 	sf::RenderWindow mWindow;
 	Ball newBall;
+	int life = 3;
+	sf::Text lifeText;
+	void defaultBall();
 	const sf::Time TimePerFrame = sf::seconds(1.f / 144.f);
 	Brick *Wall[wallWidth * wallHeight];
 	Paddle player;

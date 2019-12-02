@@ -8,6 +8,7 @@ const unsigned int wallHeight = 9; //Số gạch theo chiều cao
 const float WinHeightRatio = 0.3f; //Tỉ lệ giữa gạch và chiều cao cửa sổ
 const float WinWidthRatio = 1.f; //Tỉ lệ giữa gạch và chiều rộng cửa sổ
 const float board = 75.f;
+const float maxBallSpeed = 750;
 
 
 #endif // !__GLOBAL_H__

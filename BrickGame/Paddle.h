@@ -17,7 +17,7 @@ private:
 public:
 	Paddle();
 	virtual ~Paddle() = default;
-
+	virtual void defaultState();
 	void setScore(const int&);
 	int getScore();
 

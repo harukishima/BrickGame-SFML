@@ -65,4 +65,3 @@ sf::Vector2f MoveableObject::rolateVector(const sf::Vector2f& source, float angl
 	return sf::Vector2f(x, y);
 }
 
-

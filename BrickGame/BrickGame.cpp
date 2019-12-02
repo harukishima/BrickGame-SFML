@@ -4,12 +4,16 @@
 BrickGame::BrickGame() :
 	mWindow(sf::VideoMode(mWidth, mHeight), "Brick Game")
 {
+	newBall.defaultState();
 	font.loadFromFile("resource\\Retro Gaming.ttf");
 	scoreText.setFont(font);
 	scoreText.setCharacterSize(30);
-	scoreText.setPosition(sf::Vector2f(50, 10));
-	randomizeBrickMap();
-	createWall();
+	scoreText.setPosition(sf::Vector2f(50, 15));
+	lifeText.setFont(font);
+	lifeText.setCharacterSize(30);
+	lifeText.setPosition(sf::Vector2f(400, 15));
+	randomizeBrickMap(); //Tạo ngẫu nhiên tilemap
+	createWall(); //Xây dựng tường gạch
 	
 }
 
@@ -79,15 +83,16 @@ void BrickGame::update(sf::Time TimePerFrame)
 	updatePaddle(TimePerFrame);
 	player.animate();
 	scoreText.setString("Score: " + std::to_string(player.getScore()));
+	lifeText.setString("Life: " + std::to_string(life));
 	for (int i = 0; i < wallHeight; i++)
 	{
 		for (int j = 0; j < wallWidth; j++)
 		{
 			if (Wall[i * wallWidth + j] > 0 && Wall[i * wallWidth + j]->isAlive())
 			{
-				Wall[i * wallWidth + j]->checkCollision(newBall);
-				Wall[i * wallWidth + j]->paddleAction(player);
-				if (Wall[i * wallWidth + j]->getHP() == 0)
+				Wall[i * wallWidth + j]->checkCollision(newBall); //Kiểm tra va chạm của từng viên gạch với bóng
+				Wall[i * wallWidth + j]->paddleAction(player); //Hiệu ứng của gạch với người chơi
+				if (Wall[i * wallWidth + j]->getHP() == 0) //Nếu gạch bị phá huỷ thì xoá gạch và thay thế bằng đối tượng gạch mặc định
 				{
 					sf::Vector2f tmp(Wall[i * wallWidth + j]->getPosition());
 					delete Wall[i * wallWidth + j];
@@ -111,12 +116,13 @@ void BrickGame::render()
 		for (int j = 0; j < wallWidth; j++)
 		{
 			if (Wall[i * wallWidth + j] > 0 && Wall[i * wallWidth + j]->isAlive())
-				mWindow.draw(*Wall[i * wallWidth + j]);
+				mWindow.draw(*Wall[i * wallWidth + j]); //Vẽ từng viên gạch
 		}
 	}
-	mWindow.draw(newBall);
-	mWindow.draw(player);
-	mWindow.draw(scoreText);
+	mWindow.draw(newBall); //Vẽ bóng
+	mWindow.draw(player); //Vẽ người chơi
+	mWindow.draw(scoreText); //Vẽ điểm số
+	mWindow.draw(lifeText);
 	mWindow.display();
 }
 
@@ -186,28 +192,36 @@ void BrickGame::checkWallCollision()
 {
 	sf::Vector2f pos(newBall.getPosition());
 	sf::Vector2f dir(newBall.getDirection());
-	if (pos.x - newBall.getRadius() <= 0)
+	if (pos.x - newBall.getRadius() <= 0) //Chạm tường trái
 	{
 		dir.x = -dir.x;
 		pos.x = newBall.getRadius();
 	}
-	if (pos.y - board - newBall.getRadius() <= 0)
+	if (pos.y - board - newBall.getRadius() <= 0) //Chạm tường phải
 	{
 		dir.y = -dir.y;
 		pos.y = board + newBall.getRadius();
 	}
-	if (pos.x + newBall.getRadius() >= mWidth * WinWidthRatio)
+	if (pos.x + newBall.getRadius() >= mWidth * WinWidthRatio) //Chạm tường trên
 	{
 		dir.x = -dir.x;
 		pos.x = mWidth * WinWidthRatio - newBall.getRadius();
 	}
-	if (pos.y + newBall.getRadius() >= mHeight) //For testing purpose
-	{
-		dir.y = -dir.y;
-		pos.y = mHeight - newBall.getRadius();
-	}
+	//if (pos.y + newBall.getRadius() >= mHeight) //For testing purpose, chạm tường dưới
+	//{
+	//	dir.y = -dir.y;
+	//	pos.y = mHeight - newBall.getRadius();
+	//}
 	newBall.setDirection(dir);
 	newBall.setPosition(pos);
+	if (pos.y - newBall.getRadius() >= mHeight) //chạm tường dưới
+	{
+		/*dir.y = -dir.y;
+		pos.y = mHeight - newBall.getRadius();*/
+		life--;
+		newBall.defaultState();
+
+	}
 }
 
 void BrickGame::updateBall(sf::Time TimePerFrame)
@@ -222,6 +236,28 @@ void BrickGame::updatePaddle(sf::Time TimePerFrame)
 	sf::Vector2f movement;
 	movement = player.getDirection() * player.getSpeed() * TimePerFrame.asSeconds();
 	player.move(movement);
+}
+
+void BrickGame::defaultBall()
+{
+	newBall.setSpeed(500);
+	newBall.setPosition(mWidth / 2.f, mHeight * (3.f / 4.f));
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<int> uniform_distance(-180, std::nextafter(180, DBL_MAX));
+	float angle;
+	float x, y;
+	sf::Vector2f direction;
+
+	//Make ball move random when started
+	do {
+		angle = uniform_distance(gen);
+		direction = MoveableObject::rolateVector(newBall.getDirection(), angle);
+		direction = MoveableObject::normalizeVector(direction);
+		angle = MoveableObject::angleInDegree(direction);
+		//Ensure ball angle not too vertical
+	} while ((angle > -45 && angle < 45) || (angle < -135 && angle > 135));
+	newBall.setDirection(direction);
 }
 
 
