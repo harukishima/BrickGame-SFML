@@ -64,14 +64,24 @@ void BrickGame::processEvents()
 
 void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 {
-	if (key == sf::Keyboard::Left)
-	{
-		player.setLeftState(isPressed);
-	}
-	if (key == sf::Keyboard::Right)
-	{
-		player.setRightState(isPressed);
-	}
+		if (isPlaying && key == sf::Keyboard::Left)
+		{
+			player.setLeftState(isPressed);
+		}
+		if (isPlaying && key == sf::Keyboard::Right)
+		{
+			player.setRightState(isPressed);
+		}
+
+		if (isPressed)
+		{
+			process = checkProcessCondition();
+			if (process == 1)
+			{
+
+			}
+		}
+
 }
 
 void BrickGame::update(sf::Time TimePerFrame)
@@ -258,6 +268,20 @@ void BrickGame::defaultBall()
 		//Ensure ball angle not too vertical
 	} while ((angle > -45 && angle < 45) || (angle < -135 && angle > 135));
 	newBall.setDirection(direction);
+}
+
+int BrickGame::checkProcessCondition()
+{
+	if (life <= 0)
+	{
+		return -1; // lose
+	}
+	if (player.getScore() >= 100)
+	{
+		return 1; // win
+	}
+
+	return 0; // nothing happens
 }
 
 

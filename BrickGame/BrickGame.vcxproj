@@ -134,10 +134,13 @@
     <ClCompile Include="BrickGame.cpp" />
     <ClCompile Include="HBrick.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MBrick.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MoveableObject.cpp" />
     <ClCompile Include="NBrick.cpp" />
     <ClCompile Include="Paddle.cpp" />
+    <ClCompile Include="PauseMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h" />
@@ -145,10 +148,13 @@
     <ClInclude Include="BrickGame.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="HBrick.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MBrick.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="MoveableObject.h" />
     <ClInclude Include="NBrick.h" />
     <ClInclude Include="Paddle.h" />
+    <ClInclude Include="PauseMenu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

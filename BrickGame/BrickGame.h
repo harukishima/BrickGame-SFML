@@ -10,11 +10,19 @@
 #include"HBrick.h"
 #include"Ball.h"
 #include"Paddle.h"
+#include "Menu.h"
 
 
 class BrickGame
 {
 public:
+	bool isMainMenu = true;
+	bool isPause = false;
+	bool isPlaying = false;
+	bool isEnd = false;
+
+	int process;
+
 	BrickGame();
 	~BrickGame();
 	void run();
@@ -30,6 +38,7 @@ private:
 	void checkWallCollision();
 	void updateBall(sf::Time);
 	void updatePaddle(sf::Time);
+	int checkProcessCondition();
 
 	sf::RenderWindow mWindow;
 	Ball newBall;
