@@ -174,35 +174,50 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 
 void BrickGame::update(sf::Time TimePerFrame)
 {
-	checkWallCollision();
-	updateBall(TimePerFrame);
-	player.processMove();
-	player.checkCollision(newBall);
-	updatePaddle(TimePerFrame);
-	player.animate();
-	scoreText.setString("Score: " + std::to_string(player.getScore()));
-	lifeText.setString("Life: " + std::to_string(life));
-	for (int i = 0; i < wallHeight; i++)
+	if (isPlaying)
 	{
-		for (int j = 0; j < wallWidth; j++)
+		checkWallCollision();
+		updateBall(TimePerFrame);
+		player.processMove();
+		player.checkCollision(newBall);
+		updatePaddle(TimePerFrame);
+		player.animate();
+		scoreText.setString("Score: " + std::to_string(player.getScore()));
+		lifeText.setString("Life: " + std::to_string(life));
+		for (int i = 0; i < wallHeight; i++)
 		{
-			if (Wall[i * wallWidth + j] > 0 && Wall[i * wallWidth + j]->isAlive())
+			for (int j = 0; j < wallWidth; j++)
 			{
-				Wall[i * wallWidth + j]->checkCollision(newBall); //Kiểm tra va chạm của từng viên gạch với bóng
-				Wall[i * wallWidth + j]->paddleAction(player); //Hiệu ứng của gạch với người chơi
-				if (Wall[i * wallWidth + j]->getHP() == 0) //Nếu gạch bị phá huỷ thì xoá gạch và thay thế bằng đối tượng gạch mặc định
+				if (Wall[i * wallWidth + j] > 0 && Wall[i * wallWidth + j]->isAlive())
 				{
-					sf::Vector2f tmp(Wall[i * wallWidth + j]->getPosition());
-					delete Wall[i * wallWidth + j];
-					Wall[i * wallWidth + j] = new Brick;
-					Wall[i * wallWidth + j]->setPosition(tmp);
+					Wall[i * wallWidth + j]->checkCollision(newBall); //Kiểm tra va chạm của từng viên gạch với bóng
+					Wall[i * wallWidth + j]->paddleAction(player); //Hiệu ứng của gạch với người chơi
+					if (Wall[i * wallWidth + j]->getHP() == 0) //Nếu gạch bị phá huỷ thì xoá gạch và thay thế bằng đối tượng gạch mặc định
+					{
+						sf::Vector2f tmp(Wall[i * wallWidth + j]->getPosition());
+						delete Wall[i * wallWidth + j];
+						Wall[i * wallWidth + j] = new Brick;
+						Wall[i * wallWidth + j]->setPosition(tmp);
+					}
+					/*if (Wall[i * wallWidth + j]->getHP() == 0)
+					{
+						player.setScore(player.getScore() + Wall[i * wallWidth + j]->getScore());
+					}*/
 				}
-				/*if (Wall[i * wallWidth + j]->getHP() == 0)
-				{
-					player.setScore(player.getScore() + Wall[i * wallWidth + j]->getScore());
-				}*/
 			}
 		}
+	}
+	else if (isMainMenu)
+	{
+		mainMenu.updateMenu();
+	}
+	else if (isPause)
+	{
+		pauseMenu.updateMenu();
+	}
+	else if (isEnd)
+	{
+		endMenu.updateMenu();
 	}
 }
 
@@ -383,13 +398,13 @@ void BrickGame::defaultBall()
 	newBall.setDirection(direction);
 }
 
-int BrickGame::checkProcessCondition()
+void BrickGame::checkProcessCondition()
 {
 	if (life <= 0)
 	{
-		return -1; // lose
+		isPlaying = false;
+		isEnd = true;
 	}
-	else return 0; // nothing happens
 }
 
 

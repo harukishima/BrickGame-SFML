@@ -11,6 +11,7 @@ private:
 	int mState = 1;
 public:
 	sf::Text upperText, underText;
+	sf::Font font;
 
 	PauseMenu();
 	virtual ~PauseMenu() = default;

@@ -2,7 +2,6 @@
 
 PauseMenu::PauseMenu()
 {
-	sf::Font font;
 	font.loadFromFile("resource\\Retro Gaming.ttf");
 
 	upperText.setFont(font);
@@ -34,11 +33,13 @@ void PauseMenu::updateMenu()
 		{
 			upperText.setFillColor(sf::Color::Yellow);
 			underText.setFillColor(sf::Color::Red);
+			break;
 		}
 		case 2:		  
 		{
 			upperText.setFillColor(sf::Color::Red);
 			underText.setFillColor(sf::Color::Yellow);
+			break;
 		}
 	}
 }

@@ -41,7 +41,7 @@ private:
 	void checkWallCollision();
 	void updateBall(sf::Time);
 	void updatePaddle(sf::Time);
-	int checkProcessCondition();
+	void checkProcessCondition();
 
 	sf::RenderWindow mWindow;
 	Ball newBall;

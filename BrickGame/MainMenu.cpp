@@ -57,6 +57,7 @@ void MainMenu::updateMenu()
 			fourthText.setFillColor(sf::Color::Red);
 			fifthText.setFillColor(sf::Color::Red);
 			sixthText.setFillColor(sf::Color::Red);
+			break;
 		}
 		case 2:
 		{
@@ -66,6 +67,7 @@ void MainMenu::updateMenu()
 			fourthText.setFillColor(sf::Color::Red);
 			fifthText.setFillColor(sf::Color::Red);
 			sixthText.setFillColor(sf::Color::Red);
+			break;
 		}
 		case 3:
 		{
@@ -75,6 +77,7 @@ void MainMenu::updateMenu()
 			fourthText.setFillColor(sf::Color::Red);
 			fifthText.setFillColor(sf::Color::Red);
 			sixthText.setFillColor(sf::Color::Red);
+			break;
 		}
 		case 4:
 		{
@@ -84,6 +87,7 @@ void MainMenu::updateMenu()
 			fourthText.setFillColor(sf::Color::Blue);
 			fifthText.setFillColor(sf::Color::Red);
 			sixthText.setFillColor(sf::Color::Red);
+			break;
 		}
 		case 5:
 		{
@@ -93,6 +97,7 @@ void MainMenu::updateMenu()
 			fourthText.setFillColor(sf::Color::Red);
 			fifthText.setFillColor(sf::Color::Blue);
 			sixthText.setFillColor(sf::Color::Red);
+			break;
 		}
 		case 6:
 		{
@@ -102,6 +107,7 @@ void MainMenu::updateMenu()
 			fourthText.setFillColor(sf::Color::Red);
 			fifthText.setFillColor(sf::Color::Red);
 			sixthText.setFillColor(sf::Color::Blue);
+			break;
 		}
 	}
 

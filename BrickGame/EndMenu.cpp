@@ -2,7 +2,6 @@
 
 EndMenu::EndMenu()
 {
-		sf::Font font;
 		font.loadFromFile("resource\\Retro Gaming.ttf");
 
 		resultText.setFont(font);
@@ -48,6 +47,7 @@ void EndMenu::updateMenu()
 		rightBox.setFillColor(sf::Color(128, 128, 128));
 		rightBox.setOutlineColor(sf::Color::White);
 		rightText.setFillColor(sf::Color::White);
+		break;
 	}
 	case 2:
 	{
@@ -58,6 +58,7 @@ void EndMenu::updateMenu()
 		rightBox.setFillColor(sf::Color::White);
 		rightBox.setOutlineColor(sf::Color(128, 128, 128));
 		rightText.setFillColor(sf::Color::Black);
+		break;
 	}
 	}
 }

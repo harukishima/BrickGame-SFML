@@ -12,6 +12,7 @@ private:
 public:
 	sf::Text leftText, rightText, resultText;
 	sf::RectangleShape leftBox, rightBox;
+	sf::Font font;
 
 	EndMenu();
 	virtual ~EndMenu() = default; 
