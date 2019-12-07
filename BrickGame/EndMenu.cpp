@@ -5,10 +5,10 @@ EndMenu::EndMenu()
 		font.loadFromFile("resource\\Retro Gaming.ttf");
 
 		resultText.setFont(font);
-		resultText.setCharacterSize(80);
+		resultText.setCharacterSize(60);
 		resultText.setFillColor(sf::Color::Red);
 		resultText.setString("You lose");
-		resultText.setPosition(mWidth / 2 - 280, mHeight / 2 - 50);
+		resultText.setPosition(mWidth / 2 - 150, mHeight / 2 - 50);
 
 		leftText.setFont(font);
 		leftText.setCharacterSize(25);
@@ -19,7 +19,7 @@ EndMenu::EndMenu()
 
 		rightText = leftText;
 		rightText.setString("Leader Board");
-		rightText.setPosition(sf::Vector2f(mWidth - 300, mHeight - 85));
+		rightText.setPosition(sf::Vector2f(mWidth - 200, mHeight - 85));
 
 	// another result will add 
 }
@@ -42,7 +42,7 @@ void EndMenu::updateMenu()
 	{
 		leftBox.setFillColor(sf::Color::White);
 		leftBox.setOutlineColor(sf::Color(128, 128, 128));
-		leftText.setFillColor(sf::Color::Black);
+		leftText.setFillColor(sf::Color::Red);
 
 		rightBox.setFillColor(sf::Color(128, 128, 128));
 		rightBox.setOutlineColor(sf::Color::White);
@@ -57,7 +57,7 @@ void EndMenu::updateMenu()
 
 		rightBox.setFillColor(sf::Color::White);
 		rightBox.setOutlineColor(sf::Color(128, 128, 128));
-		rightText.setFillColor(sf::Color::Black);
+		rightText.setFillColor(sf::Color::Red);
 		break;
 	}
 	}

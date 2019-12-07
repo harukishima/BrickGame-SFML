@@ -206,6 +206,7 @@ void BrickGame::update(sf::Time TimePerFrame)
 				}
 			}
 		}
+		checkProcessCondition();
 	}
 	else if (isMainMenu)
 	{
