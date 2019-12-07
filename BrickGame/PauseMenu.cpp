@@ -31,14 +31,14 @@ void PauseMenu::updateMenu()
 	{
 		case 1:
 		{
-			upperText.setFillColor(sf::Color::Yellow);
+			upperText.setFillColor(sf::Color::Blue);
 			underText.setFillColor(sf::Color::Red);
 			break;
 		}
 		case 2:		  
 		{
 			upperText.setFillColor(sf::Color::Red);
-			underText.setFillColor(sf::Color::Yellow);
+			underText.setFillColor(sf::Color::Blue);
 			break;
 		}
 	}

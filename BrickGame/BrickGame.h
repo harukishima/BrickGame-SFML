@@ -24,6 +24,10 @@ public:
 	bool isPlaying = false;
 	bool isEnd = false;
 	bool isNext = false;
+	bool isDemo = false;
+	bool isEndlessMode = false;
+	bool isHardMode = false;
+	bool isScoreBoard = false;
 
 	int process;
 
@@ -43,6 +47,7 @@ private:
 	void updateBall(sf::Time);
 	void updatePaddle(sf::Time);
 	void checkProcessCondition();
+	int checkBrickLeft();
 
 	sf::RenderWindow mWindow;
 	Ball newBall;
@@ -54,6 +59,7 @@ private:
 	Paddle player;
 	sf::Text scoreText;
 	sf::Font font;
+	sf::Text nextLevel;
 	int brickMap[wallHeight * wallWidth];
 	/*{
 		1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,

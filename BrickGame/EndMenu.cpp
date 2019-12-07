@@ -18,7 +18,7 @@ EndMenu::EndMenu()
 
 
 		rightText = leftText;
-		rightText.setString("Leader Board");
+		rightText.setString("Score Board");
 		rightText.setPosition(sf::Vector2f(mWidth - 200, mHeight - 85));
 
 	// another result will add 

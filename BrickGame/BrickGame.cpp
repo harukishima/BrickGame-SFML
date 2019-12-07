@@ -400,11 +400,38 @@ void BrickGame::defaultBall()
 
 void BrickGame::checkProcessCondition()
 {
-	if (life <= 0)
+	if (life <= -1000)
 	{
 		isPlaying = false;
 		isEnd = true;
 	}
+	else if (life > 0 && checkBrickLeft() == 0)
+	{
+		isNext = true;
+	}
 }
+
+int BrickGame::checkBrickLeft()
+{
+	int check = 0;
+	for (int i = 0; i < wallHeight; i++)
+	{
+		for (int j = 0; j < wallWidth; j++)
+		{
+			if (Wall[i * wallWidth + j])
+			{
+				check = 1;
+				break;
+			}
+		}
+		if (check == 1)
+		{
+			break;
+		}
+	}
+	return check;
+}
+
+
 
 
