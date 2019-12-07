@@ -72,16 +72,104 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 		{
 			player.setRightState(isPressed);
 		}
+		if (isPlaying && key == sf::Keyboard::Escape)
+		{
+			isPause = true;
+			isPlaying = false;
+		}
 
 		if (isPressed)
 		{
-			process = checkProcessCondition();
-			if (process == 1)
+			if (isEnd)
 			{
+				endMenu.changeState(key);
+				if (endMenu.getState() == 1 && key == sf::Keyboard::Enter)
+				{
+					isMainMenu = true;
+					isPlaying = false;
+					isEnd = false;
+				}
+				else if (endMenu.getState() == 2 && key == sf::Keyboard::Enter)
+				{
+					isPlaying = false;
+					isEnd = false;
+					// enter scoreboard
+				}
+			}
+			if (isMainMenu)
+			{
+				mainMenu.changeState(key);
+				if (key == sf::Keyboard::Enter)
+				{
+					switch (mainMenu.getState())
+					{
+					case 1:
+					{
+						if (!isEnd && !isPlaying)
+						{
+							isPlaying = true;
+							break;
+						}
+					}
+					case 2:
+					{
+						isMainMenu = false;
+						isPlaying = true;
+						// endless mode
+						break;
+					}
+					case 3:
+					{
+						isMainMenu = false;
+						isPlaying = true;
+						// the left mode
+						break;
+					}
+					case 4:
+					{
+						isMainMenu = false;
+						// demo
+						break;
+					}
+					case 5:
+					{
+						isMainMenu = false;
+						isPlaying = true;
+						// enter scoreboard
+						break;
+					}
+					case 6:
+					{
+						mWindow.close();
+						break;
+					}
+					}
+				}
 
 			}
+			if (isPause)
+			{
+				pauseMenu.changeState(key);
+				if (key == sf::Keyboard::Enter)
+				{
+					switch (pauseMenu.getState())
+					{
+						case 1:
+						{
+							isPlaying = true;
+							isPause = false;
+							break;
+						}
+						case 2:
+						{
+							isPlaying = false;
+							isMainMenu = true;
+							break;
+						}
+					}
+				}
+			}
 		}
-
 }
 
 void BrickGame::update(sf::Time TimePerFrame)
@@ -121,18 +209,43 @@ void BrickGame::update(sf::Time TimePerFrame)
 void BrickGame::render()
 {
 	mWindow.clear();
-	for (int i = 0; i < wallHeight; i++)
+	if (isPlaying)
 	{
-		for (int j = 0; j < wallWidth; j++)
+		for (int i = 0; i < wallHeight; i++)
 		{
-			if (Wall[i * wallWidth + j] > 0 && Wall[i * wallWidth + j]->isAlive())
-				mWindow.draw(*Wall[i * wallWidth + j]); //Vẽ từng viên gạch
+			for (int j = 0; j < wallWidth; j++)
+			{
+				if (Wall[i * wallWidth + j] > 0 && Wall[i * wallWidth + j]->isAlive())
+					mWindow.draw(*Wall[i * wallWidth + j]); //Vẽ từng viên gạch
+			}
 		}
+		mWindow.draw(newBall); //Vẽ bóng
+		mWindow.draw(player); //Vẽ người chơi
+		mWindow.draw(scoreText); //Vẽ điểm số
+		mWindow.draw(lifeText);
 	}
-	mWindow.draw(newBall); //Vẽ bóng
-	mWindow.draw(player); //Vẽ người chơi
-	mWindow.draw(scoreText); //Vẽ điểm số
-	mWindow.draw(lifeText);
+	else if (isMainMenu)
+	{
+		//Draw main menu
+		mWindow.draw(mainMenu.title);
+		mWindow.draw(mainMenu.firstText);
+		mWindow.draw(mainMenu.secondText);
+		mWindow.draw(mainMenu.thirdText);
+		mWindow.draw(mainMenu.fourthText);
+		mWindow.draw(mainMenu.fifthText);
+		mWindow.draw(mainMenu.sixthText);
+	}
+	else if (isPause)
+	{
+		mWindow.draw(pauseMenu.upperText);
+		mWindow.draw(pauseMenu.underText);
+	}
+	else if (isEnd)
+	{
+		mWindow.draw(endMenu.resultText);
+		mWindow.draw(endMenu.leftText);
+		mWindow.draw(endMenu.rightText);
+	}
 	mWindow.display();
 }
 
@@ -276,12 +389,7 @@ int BrickGame::checkProcessCondition()
 	{
 		return -1; // lose
 	}
-	if (player.getScore() >= 100)
-	{
-		return 1; // win
-	}
-
-	return 0; // nothing happens
+	else return 0; // nothing happens
 }
 
 

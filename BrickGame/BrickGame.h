@@ -11,6 +11,9 @@
 #include"Ball.h"
 #include"Paddle.h"
 #include "Menu.h"
+#include "EndMenu.h"
+#include "PauseMenu.h"
+#include "MainMenu.h"
 
 
 class BrickGame
@@ -63,6 +66,10 @@ private:
 		1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1,
 		1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
 	};*/
+	EndMenu endMenu;
+	MainMenu mainMenu;
+	PauseMenu pauseMenu;
+
 };
 
 

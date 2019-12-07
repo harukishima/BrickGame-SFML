@@ -9,12 +9,13 @@ class MainMenu:public Menu
 {
 private:
 	int mState = 1;
+	sf::Font font;
 public:
-	sf::Text firstText, secondText, thirdText, fourthText, fifthText, sixthText;
-	sf::RectangleShape firstBox, secondBox, thirdBox, fourthBox, fifthBox, sixthBox;
+	sf::Text firstText, secondText, thirdText, fourthText, fifthText, sixthText, title;
+
 
 	MainMenu();
-
+	int getState();
 	virtual void updateMenu();
 	virtual void changeState(sf::Keyboard::Key key);
 

@@ -1,19 +1,20 @@
-#ifndef __PAUSEMENU_H
-#define __PAUSEMENU_H
+#ifndef __PAUSEMENU_H__
+#define __PAUSEMENU_H__
 
 #include "Menu.h"
 #include "Global.h"
 #include<SFML\Graphics.hpp>
 
-class PauseMenu :public Menu
+class EndMenu :public Menu
 {
 private:
 	int mState = 1;
 public:
-	sf::Text upperText, underText;
+	sf::Text leftText, rightText, resultText;
+	sf::RectangleShape leftBox, rightBox;
 
-	PauseMenu();
-	virtual ~PauseMenu() = default;
+	EndMenu();
+	virtual ~EndMenu() = default; 
 
 	void setState(int state);
 	int getState();
@@ -23,4 +24,3 @@ public:
 
 
 #endif
-

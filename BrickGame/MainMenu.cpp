@@ -2,52 +2,47 @@
 
 MainMenu::MainMenu()
 {
-	sf::Font font;
 	font.loadFromFile("resource\\Retro Gaming.ttf");
 
-	firstBox.setSize(sf::Vector2f(200, 50));
-	firstBox.setFillColor(sf::Color::Red);
-	firstBox.setOutlineThickness(2);
-	firstBox.setOutlineColor(sf::Color::White);
-	firstBox.setPosition(sf::Vector2f(mWidth / 2 - 100, mHeight / 2 + 200));
+	title.setFont(font);
+	title.setCharacterSize(55);
+	title.setString("Brick Game");
+	title.setFillColor(sf::Color::Blue);
+	title.setPosition(sf::Vector2f(mWidth / 2 - 150, mHeight / 2 - 240));
+
 
 	firstText.setFont(font);
 	firstText.setCharacterSize(25);
 	firstText.setString("Continue");
-	firstText.setFillColor(sf::Color::Yellow);
-	firstText.setPosition(sf::Vector2f(firstBox.getPosition().x + 50, firstBox.getPosition().y + 8));
+	firstText.setFillColor(sf::Color::Red);
+	firstText.setPosition(sf::Vector2f(mWidth / 2 - 100, mHeight / 2 - 125));
 
 	//add firstBox & firstText while having data game 
 
-	secondBox = firstBox;
-	secondBox.setPosition(sf::Vector2f(firstBox.getPosition().x, firstBox.getPosition().y - 100));
 	secondText = firstText;
-	secondText.setString("Single");
-	secondText.setPosition(sf::Vector2f(secondBox.getPosition().x + 50, secondBox.getPosition().y + 8));
+	secondText.setString("Endless Mode");
+	secondText.setPosition(sf::Vector2f(firstText.getPosition().x, firstText.getPosition().y + 75));
 
-	thirdBox = firstBox;
-	thirdBox.setPosition(sf::Vector2f(secondBox.getPosition().x, secondBox.getPosition().y - 100));
 	thirdText = firstText;
-	thirdText.setString("Multi");
-	thirdText.setPosition(sf::Vector2f(thirdBox.getPosition().x + 50, thirdBox.getPosition().y + 8));
+	thirdText.setString("Hard Mode");
+	thirdText.setPosition(sf::Vector2f(secondText.getPosition().x, secondText.getPosition().y + 75));
 
-	fourthBox = firstBox;
-	fourthBox.setPosition(sf::Vector2f(thirdBox.getPosition().x, thirdBox.getPosition().y - 100));
 	fourthText = firstText;
 	fourthText.setString("Demo");
-	fourthText.setPosition(sf::Vector2f(fourthBox.getPosition().x + 50, fourthBox.getPosition().y + 8));
-
-	fifthBox = firstBox;
-	fifthBox.setPosition(sf::Vector2f(fourthBox.getPosition().x, fourthBox.getPosition().y - 100));
+	fourthText.setPosition(sf::Vector2f(thirdText.getPosition().x, thirdText.getPosition().y + 75));
+	
 	fifthText = firstText;
-	fifthText.setString("Leader Board");
-	fifthText.setPosition(sf::Vector2f(fifthBox.getPosition().x + 50, fifthBox.getPosition().y + 8));
+	fifthText.setString("Score Board");
+	fifthText.setPosition(sf::Vector2f(fourthText.getPosition().x, fourthText.getPosition().y +75));
 
-	sixthBox = firstBox;
-	sixthBox.setPosition(sf::Vector2f(fifthBox.getPosition().x, fifthBox.getPosition().y - 100));
 	sixthText = firstText;
 	sixthText.setString("Exit");
-	sixthText.setPosition(sf::Vector2f(sixthBox.getPosition().x + 50, sixthBox.getPosition().y + 8));
+	sixthText.setPosition(sf::Vector2f(fifthText.getPosition().x, fifthText.getPosition().y + 75));
+}
+
+int MainMenu::getState()
+{
+	return mState;
 }
  
 void MainMenu::updateMenu()
@@ -56,57 +51,57 @@ void MainMenu::updateMenu()
 	{
 		case 1:
 		{
-			firstBox.setOutlineColor(sf::Color::Green);
-			secondBox.setOutlineColor(sf::Color::White);
-			thirdBox.setOutlineColor(sf::Color::White);
-			fourthBox.setOutlineColor(sf::Color::White);
-			fifthBox.setOutlineColor(sf::Color::White);
-			sixthBox.setOutlineColor(sf::Color::White);
+			firstText.setFillColor(sf::Color::Blue);
+			secondText.setFillColor(sf::Color::Red);
+			thirdText.setFillColor(sf::Color::Red);
+			fourthText.setFillColor(sf::Color::Red);
+			fifthText.setFillColor(sf::Color::Red);
+			sixthText.setFillColor(sf::Color::Red);
 		}
 		case 2:
 		{
-			firstBox.setOutlineColor(sf::Color::White);
-			secondBox.setOutlineColor(sf::Color::Green);
-			thirdBox.setOutlineColor(sf::Color::White);
-			fourthBox.setOutlineColor(sf::Color::White);
-			fifthBox.setOutlineColor(sf::Color::White);
-			sixthBox.setOutlineColor(sf::Color::White);
+			firstText.setFillColor(sf::Color::Red);
+			secondText.setFillColor(sf::Color::Blue);
+			thirdText.setFillColor(sf::Color::Red);
+			fourthText.setFillColor(sf::Color::Red);
+			fifthText.setFillColor(sf::Color::Red);
+			sixthText.setFillColor(sf::Color::Red);
 		}
 		case 3:
 		{
-			firstBox.setOutlineColor(sf::Color::White);
-			secondBox.setOutlineColor(sf::Color::White);
-			thirdBox.setOutlineColor(sf::Color::Green);
-			fourthBox.setOutlineColor(sf::Color::White);
-			fifthBox.setOutlineColor(sf::Color::White);
-			sixthBox.setOutlineColor(sf::Color::White);
+			firstText.setFillColor(sf::Color::Red);
+			secondText.setFillColor(sf::Color::Red);
+			thirdText.setFillColor(sf::Color::Blue);
+			fourthText.setFillColor(sf::Color::Red);
+			fifthText.setFillColor(sf::Color::Red);
+			sixthText.setFillColor(sf::Color::Red);
 		}
 		case 4:
 		{
-			firstBox.setOutlineColor(sf::Color::White);
-			secondBox.setOutlineColor(sf::Color::White);
-			thirdBox.setOutlineColor(sf::Color::White);
-			fourthBox.setOutlineColor(sf::Color::Green);
-			fifthBox.setOutlineColor(sf::Color::White);
-			sixthBox.setOutlineColor(sf::Color::White);
+			firstText.setFillColor(sf::Color::Red);
+			secondText.setFillColor(sf::Color::Red);
+			thirdText.setFillColor(sf::Color::Red);
+			fourthText.setFillColor(sf::Color::Blue);
+			fifthText.setFillColor(sf::Color::Red);
+			sixthText.setFillColor(sf::Color::Red);
 		}
 		case 5:
 		{
-			firstBox.setOutlineColor(sf::Color::White);
-			secondBox.setOutlineColor(sf::Color::White);
-			thirdBox.setOutlineColor(sf::Color::White);
-			fourthBox.setOutlineColor(sf::Color::White);
-			fifthBox.setOutlineColor(sf::Color::Green);
-			sixthBox.setOutlineColor(sf::Color::White);
+			firstText.setFillColor(sf::Color::Red);
+			secondText.setFillColor(sf::Color::Red);
+			thirdText.setFillColor(sf::Color::Red);
+			fourthText.setFillColor(sf::Color::Red);
+			fifthText.setFillColor(sf::Color::Blue);
+			sixthText.setFillColor(sf::Color::Red);
 		}
 		case 6:
 		{
-			firstBox.setOutlineColor(sf::Color::White);
-			secondBox.setOutlineColor(sf::Color::White);
-			thirdBox.setOutlineColor(sf::Color::White);
-			fourthBox.setOutlineColor(sf::Color::White);
-			fifthBox.setOutlineColor(sf::Color::White);
-			sixthBox.setOutlineColor(sf::Color::Green);
+			firstText.setFillColor(sf::Color::Red);
+			secondText.setFillColor(sf::Color::Red);
+			thirdText.setFillColor(sf::Color::Red);
+			fourthText.setFillColor(sf::Color::Red);
+			fifthText.setFillColor(sf::Color::Red);
+			sixthText.setFillColor(sf::Color::Blue);
 		}
 	}
 
