@@ -80,22 +80,6 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 
 		if (isPressed)
 		{
-			if (isEnd)
-			{
-				endMenu.changeState(key);
-				if (endMenu.getState() == 1 && key == sf::Keyboard::Enter)
-				{
-					isMainMenu = true;
-					isPlaying = false;
-					isEnd = false;
-				}
-				else if (endMenu.getState() == 2 && key == sf::Keyboard::Enter)
-				{
-					isPlaying = false;
-					isEnd = false;
-					// enter scoreboard
-				}
-			}
 			if (isMainMenu)
 			{
 				mainMenu.changeState(key);
@@ -147,6 +131,22 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 				}
 
 			}
+			if (isEnd)
+			{
+				endMenu.changeState(key);
+				if (endMenu.getState() == 1 && key == sf::Keyboard::Enter)
+				{
+					isMainMenu = true;
+					isPlaying = false;
+					isEnd = false;
+				}
+				else if (endMenu.getState() == 2 && key == sf::Keyboard::Enter)
+				{
+					isPlaying = false;
+					isEnd = false;
+					// enter scoreboard
+				}
+			}
 			if (isPause)
 			{
 				pauseMenu.changeState(key);
@@ -162,7 +162,6 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 						}
 						case 2:
 						{
-							isPlaying = false;
 							isMainMenu = true;
 							break;
 						}
@@ -313,7 +312,7 @@ void BrickGame::destroyWall()
 	for (int i = 0; i < wallHeight; i++)
 		for (int j = 0; j < wallWidth; j++)
 		{
-			delete Wall[i * wallHeight + j];
+			delete Wall[i * wallWidth + j];
 		}
 }
 
@@ -323,7 +322,7 @@ void BrickGame::randomizeBrickMap()
 	for(int i = 0; i < wallHeight; i++)
 		for (int j = 0; j < wallWidth; j++)
 		{
-			brickMap[i * wallHeight + j] = rand() % 4;
+			brickMap[i * wallWidth + j] = rand() % 4;
 		}
 }
 

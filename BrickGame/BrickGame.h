@@ -23,6 +23,7 @@ public:
 	bool isPause = false;
 	bool isPlaying = false;
 	bool isEnd = false;
+	bool isNext = false;
 
 	int process;
 
