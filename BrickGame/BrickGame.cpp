@@ -206,6 +206,13 @@ void BrickGame::update(sf::Time TimePerFrame)
 			}
 		}
 		checkProcessCondition();
+		if (isNext)
+		{
+			destroyWall();
+			randomizeBrickMap();
+			createWall();
+			isNext = false;
+		}
 	}
 	else if (isMainMenu)
 	{
@@ -238,6 +245,17 @@ void BrickGame::render()
 		mWindow.draw(player); //Vẽ người chơi
 		mWindow.draw(scoreText); //Vẽ điểm số
 		mWindow.draw(lifeText);
+		if (isNext)
+		{
+			for (int i = 0; i < wallHeight; i++)
+			{
+				for (int j = 0; j < wallWidth; j++)
+				{
+					if (Wall[i * wallWidth + j] > 0 && Wall[i * wallWidth + j]->isAlive())
+						mWindow.draw(*Wall[i * wallWidth + j]); //Vẽ từng viên gạch
+				}
+			}
+		}
 	}
 	else if (isMainMenu)
 	{
