@@ -30,6 +30,6 @@ void Ball::defaultState()
 		direction = MoveableObject::normalizeVector(direction);
 		angle = MoveableObject::angleInDegree(direction);
 		//Ensure ball angle not too vertical
-	} while ((angle > -45 && angle < 45) || (angle < -135 && angle > 135));
+	} while (!(angle < -45 && angle > -135)); //(angle > -45 && angle < 45) || (angle < -135 && angle > 135)
 	setDirection(direction);
 }

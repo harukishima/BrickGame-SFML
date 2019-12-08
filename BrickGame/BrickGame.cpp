@@ -12,6 +12,7 @@ BrickGame::BrickGame() :
 	lifeText.setFont(font);
 	lifeText.setCharacterSize(30);
 	lifeText.setPosition(sf::Vector2f(400, 15));
+	highScore.load("highscore.txt");
 	//randomizeBrickMap(); //Tạo ngẫu nhiên tilemap
 	//createWall(); //Xây dựng tường gạch
 	
@@ -20,6 +21,7 @@ BrickGame::BrickGame() :
 BrickGame::~BrickGame()
 {
 	destroyWall();
+	highScore.save("highscore.txt");
 }
 
 void BrickGame::run()
@@ -102,6 +104,7 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 						// endless mode
 						restartGame();
 						randomizeBrickMap();
+						//loadGame("Save\\savegame1.txt");
 						createWall();
 						break;
 					}
@@ -120,14 +123,16 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 						restartGame();
 						randomizeBrickMap();
 						createWall();
+						player.setSpeed(1000);
 						// demo
 						break;
 					}
 					case 5:
 					{
 						isMainMenu = false;
-						isPlaying = true;
+						//isPlaying = true;
 						// enter scoreboard
+						isScoreBoard = true;
 						break;
 					}
 					case 6:
@@ -138,6 +143,14 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 					}
 				}
 
+			}
+			if (isScoreBoard)
+			{
+				if (key == sf::Keyboard::Escape)
+				{
+					isScoreBoard = false;
+					isMainMenu = true;
+				}
 			}
 			if (isEnd)
 			{
@@ -154,6 +167,7 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 				else if (endMenu.getState() == 2 && key == sf::Keyboard::Enter)
 				{
 					isEnd = false;
+					isScoreBoard = true;
 					// enter scoreboard
 				}
 			}
@@ -166,6 +180,7 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 					{
 						case 1:
 						{
+							saveGame("Save\\savegame1.txt");
 							isPlaying = true;
 							isPause = false;
 							break;
@@ -277,6 +292,14 @@ void BrickGame::render()
 		mWindow.draw(endMenu.leftText);
 		mWindow.draw(endMenu.rightText);
 	}
+	else if (isScoreBoard)
+	{
+		mWindow.draw(highScore.title);
+		for (int i = 0; i < 10; i++)
+		{
+			mWindow.draw(highScore.scoreText[i]);
+		}
+	}
 	mWindow.display();
 }
 
@@ -316,6 +339,9 @@ void BrickGame::createWall()
 			case 4:
 				Wall[i * wallWidth + j] = new x2Brick;
 				break;
+			case 5:
+				Wall[i * wallWidth + j] = new MetalBrick;
+				break;
 			default:
 				Wall[i * wallWidth + j] = new Brick;
 				break;
@@ -341,11 +367,28 @@ void BrickGame::destroyWall()
 
 void BrickGame::randomizeBrickMap()
 {
-	srand((int)time(0));
+	//srand((int)time(0));
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<int> uniform_distance(1, std::nextafter(100, DBL_MAX));
+	int prob;
 	for(int i = 0; i < wallHeight; i++)
 		for (int j = 0; j < wallWidth; j++)
 		{
-			brickMap[i * wallWidth + j] = rand() % 5;
+			//brickMap[i * wallWidth + j] = rand() % 6;
+			prob = uniform_distance(gen);
+			if (prob <= 30)
+				brickMap[i * wallWidth + j] = 0;
+			else if (prob <= 65)
+				brickMap[i * wallWidth + j] = 1;
+			else if (prob <= 80)
+				brickMap[i * wallWidth + j] = 2;
+			else if (prob <= 90)
+				brickMap[i * wallWidth + j] = 3;
+			else if (prob <= 95)
+				brickMap[i * wallWidth + j] = 4;
+			else
+				brickMap[i * wallWidth + j] = 5;
 		}
 }
 
@@ -427,6 +470,8 @@ void BrickGame::checkProcessCondition()
 	{
 		isPlaying = false;
 		isEnd = true;
+		if(!isDemo)
+			highScore.addScore(player.getScore());
 	}
 	else if (life > 0 && checkBrickLeft() == 0)
 	{
@@ -445,7 +490,7 @@ int BrickGame::checkBrickLeft()
 	{
 		for (int j = 0; j < wallWidth; j++)
 		{
-			if (Wall[i * wallWidth + j]->getHP() > 0)
+			if (Wall[i * wallWidth + j]->getHP() > 0 && Wall[i * wallWidth + j]->getType() != 5)
 			{
 				check = 1;
 				break;
@@ -464,7 +509,7 @@ void BrickGame::restartGame()
 	player.setScore(0);
 	newBall.defaultState();
 	player.defaultState();
-	life = 5;
+	life = defaultLife;
 }
 
 void BrickGame::processBot()
@@ -526,6 +571,70 @@ void BrickGame::brickProcess()
 			}
 		}
 	}
+}
+
+int* BrickGame::exportBrickMap()
+{
+	int* map = new int[wallWidth * wallHeight];
+	for (int i = 0; i < wallHeight; i++)
+		for (int j = 0; j < wallWidth; j++)
+		{
+			map[i * wallWidth + j] = Wall[i * wallWidth + j]->getType();
+		}
+	return map;
+}
+
+void BrickGame::saveGame(const std::string& path)
+{
+	std::ofstream file;
+	file.open(path);
+	if (!file.is_open()) return;
+	int* map = exportBrickMap(); int mapSize = wallWidth * wallHeight;
+	sf::Vector2f pos(newBall.getPosition()), dir(newBall.getDirection());
+	float speed = newBall.getSpeed();
+	file << life << "," << player.getScore() << "," << pos.x << "," << pos.y << "," << dir.x << "," << dir.y << "," << speed;
+	for (int i = 0; i < wallHeight; i++)
+		for (int j = 0; j < wallWidth; j++)
+		{
+			file << "," << map[i * wallWidth + j];
+		}
+	delete map;
+	file.close();
+}
+
+void BrickGame::loadGame(const std::string& path)
+{
+	std::ifstream file;
+	file.open(path);
+	if (!file.is_open()) return;
+	sf::Vector2f pos, dir;
+	float speed;
+	std::string tmp;
+	char delim = ',';
+	std::getline(file, tmp, delim);
+	life = std::stoi(tmp);
+	std::getline(file, tmp, delim);
+	player.setScore(std::stoi(tmp));
+	std::getline(file, tmp, delim);
+	pos.x = std::stof(tmp);
+	std::getline(file, tmp, delim);
+	pos.y = std::stof(tmp);
+	std::getline(file, tmp, delim);
+	dir.x = std::stof(tmp);
+	std::getline(file, tmp, delim);
+	dir.y = std::stof(tmp);
+	std::getline(file, tmp, delim);
+	speed = std::stof(tmp);
+	for (int i = 0; i < wallHeight; i++)
+		for (int j = 0; j < wallWidth; j++)
+		{
+			std::getline(file, tmp, delim);
+			brickMap[i * wallWidth + j] = std::stoi(tmp);
+		}
+	file.close();
+	newBall.setPosition(pos);
+	newBall.setDirection(dir);
+	newBall.setSpeed(speed);
 }
 
 

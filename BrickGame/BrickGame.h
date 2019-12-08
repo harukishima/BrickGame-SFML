@@ -5,16 +5,19 @@
 #include<ctime>
 #include<string>
 #include<random>
+#include<fstream>
 #include"NBrick.h"
 #include"MBrick.h"
 #include"HBrick.h"
 #include"x2Brick.h"
+#include"MetalBrick.h"
 #include"Ball.h"
 #include"Paddle.h"
 #include "Menu.h"
 #include "EndMenu.h"
 #include "PauseMenu.h"
 #include "MainMenu.h"
+#include "ScoreBoard.h"
 
 
 class BrickGame
@@ -52,6 +55,10 @@ private:
 	void restartGame();
 	void processBot();
 	void brickProcess();
+	int* exportBrickMap();
+	void saveGame(const std::string&);
+	void loadGame(const std::string&);
+	
 
 	sf::RenderWindow mWindow;
 	Ball newBall;
@@ -64,7 +71,9 @@ private:
 	sf::Text scoreText;
 	sf::Font font;
 	sf::Text nextLevel;
+	ScoreBoard highScore;
 	int brickMap[wallHeight * wallWidth];
+	int totalBrick = 0;
 	/*{
 		1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1,
