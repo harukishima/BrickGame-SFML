@@ -79,6 +79,16 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 			isPause = true;
 			isPlaying = false;
 		}
+		if (isDemo && key == sf::Keyboard::Escape)
+		{
+			isPause = true;
+			isDemo = false;
+		}
+		if (isHardMode && key == sf::Keyboard::Escape)
+		{
+			isPause = true;
+			isHardMode = false;
+		}
 
 		if (isPressed)
 		{
