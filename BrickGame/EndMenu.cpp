@@ -81,13 +81,13 @@ void EndMenu::changeState(sf::Keyboard::Key key)
 	}
 }
 
-void EndMenu::clearEndlessMess()
-{
-	font.loadFromFile("resource\\Retro Gaming.ttf");
-
-	nextMess.setFont(font);
-	nextMess.setCharacterSize(60);
-	nextMess.setFillColor(sf::Color::Red);
-	nextMess.setString("Clear, press Enter to continue challenging");
-	nextMess.setPosition(mWidth / 2 - 150, mHeight / 2 - 50);
-}
+//void EndMenu::clearEndlessMess()
+//{
+//	font.loadFromFile("resource\\Retro Gaming.ttf");
+//
+//	nextMess.setFont(font);
+//	nextMess.setCharacterSize(60);
+//	nextMess.setFillColor(sf::Color::Red);
+//	nextMess.setString("Clear, press Enter to continue challenging");
+//	nextMess.setPosition(mWidth / 2 - 150, mHeight / 2 - 50);
+//}
