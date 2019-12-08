@@ -10,6 +10,7 @@ public:
 	HBrick();
 	virtual ~HBrick() = default;
 	virtual int getType() { return 3; }
+
 };
 
 

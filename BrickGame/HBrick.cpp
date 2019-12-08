@@ -9,3 +9,5 @@ HBrick::HBrick()
 	brickTex[1].loadFromFile("resource\\08-Breakout-Tiles.png");
 	setTexture(brickTex);
 }
+
+

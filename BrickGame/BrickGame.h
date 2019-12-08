@@ -8,6 +8,7 @@
 #include"NBrick.h"
 #include"MBrick.h"
 #include"HBrick.h"
+#include"x2Brick.h"
 #include"Ball.h"
 #include"Paddle.h"
 #include "Menu.h"
@@ -48,6 +49,9 @@ private:
 	void updatePaddle(sf::Time);
 	void checkProcessCondition();
 	int checkBrickLeft();
+	void restartGame();
+	void processBot();
+	void brickProcess();
 
 	sf::RenderWindow mWindow;
 	Ball newBall;
@@ -55,7 +59,7 @@ private:
 	sf::Text lifeText;
 	void defaultBall();
 	const sf::Time TimePerFrame = sf::seconds(1.f / 144.f);
-	Brick *Wall[wallWidth * wallHeight];
+	Brick* Wall[wallWidth * wallHeight] = {NULL};
 	Paddle player;
 	sf::Text scoreText;
 	sf::Font font;

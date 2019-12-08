@@ -11,6 +11,7 @@ public:
 	MBrick();
 	virtual ~MBrick() = default;
 	virtual int getType() { return 2; }
+
 };
 
 
