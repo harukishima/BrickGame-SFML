@@ -12,8 +12,8 @@ BrickGame::BrickGame() :
 	lifeText.setFont(font);
 	lifeText.setCharacterSize(30);
 	lifeText.setPosition(sf::Vector2f(400, 15));
-	randomizeBrickMap(); //Tạo ngẫu nhiên tilemap
-	createWall(); //Xây dựng tường gạch
+	//randomizeBrickMap(); //Tạo ngẫu nhiên tilemap
+	//createWall(); //Xây dựng tường gạch
 	
 }
 
@@ -64,11 +64,11 @@ void BrickGame::processEvents()
 
 void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 {
-		if (isPlaying && key == sf::Keyboard::Left)
+		if (isPlaying && key == sf::Keyboard::Left && !isDemo)
 		{
 			player.setLeftState(isPressed);
 		}
-		if (isPlaying && key == sf::Keyboard::Right)
+		if (isPlaying && key == sf::Keyboard::Right && !isDemo)
 		{
 			player.setRightState(isPressed);
 		}
@@ -100,6 +100,9 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 						isMainMenu = false;
 						isPlaying = true;
 						// endless mode
+						restartGame();
+						randomizeBrickMap();
+						createWall();
 						break;
 					}
 					case 3:
@@ -112,6 +115,11 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 					case 4:
 					{
 						isMainMenu = false;
+						isPlaying = true;
+						isDemo = true;
+						restartGame();
+						randomizeBrickMap();
+						createWall();
 						// demo
 						break;
 					}
@@ -134,15 +142,17 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 			if (isEnd)
 			{
 				endMenu.changeState(key);
+				restartGame();
+				destroyWall();
+				isPlaying = false;
+				isDemo = false;
 				if (endMenu.getState() == 1 && key == sf::Keyboard::Enter)
 				{
 					isMainMenu = true;
-					isPlaying = false;
 					isEnd = false;
 				}
 				else if (endMenu.getState() == 2 && key == sf::Keyboard::Enter)
 				{
-					isPlaying = false;
 					isEnd = false;
 					// enter scoreboard
 				}
@@ -163,6 +173,11 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 						case 2:
 						{
 							isMainMenu = true;
+							isPlaying = false;
+							isPause = false;
+							isDemo = false;
+							destroyWall();
+							restartGame();
 							break;
 						}
 					}
@@ -183,29 +198,12 @@ void BrickGame::update(sf::Time TimePerFrame)
 		player.animate();
 		scoreText.setString("Score: " + std::to_string(player.getScore()));
 		lifeText.setString("Life: " + std::to_string(life));
-		for (int i = 0; i < wallHeight; i++)
-		{
-			for (int j = 0; j < wallWidth; j++)
-			{
-				if (Wall[i * wallWidth + j] > 0 && Wall[i * wallWidth + j]->isAlive())
-				{
-					Wall[i * wallWidth + j]->checkCollision(newBall); //Kiểm tra va chạm của từng viên gạch với bóng
-					Wall[i * wallWidth + j]->paddleAction(player); //Hiệu ứng của gạch với người chơi
-					if (Wall[i * wallWidth + j]->getHP() == 0) //Nếu gạch bị phá huỷ thì xoá gạch và thay thế bằng đối tượng gạch mặc định
-					{
-						sf::Vector2f tmp(Wall[i * wallWidth + j]->getPosition());
-						delete Wall[i * wallWidth + j];
-						Wall[i * wallWidth + j] = new Brick;
-						Wall[i * wallWidth + j]->setPosition(tmp);
-					}
-					/*if (Wall[i * wallWidth + j]->getHP() == 0)
-					{
-						player.setScore(player.getScore() + Wall[i * wallWidth + j]->getScore());
-					}*/
-				}
-			}
-		}
+		brickProcess();
 		checkProcessCondition();
+	}
+	if (isDemo)
+	{
+		processBot();
 	}
 	else if (isMainMenu)
 	{
@@ -297,6 +295,9 @@ void BrickGame::createWall()
 			case 3:
 				Wall[i * wallWidth + j] = new HBrick;
 				break;
+			case 4:
+				Wall[i * wallWidth + j] = new x2Brick;
+				break;
 			default:
 				Wall[i * wallWidth + j] = new Brick;
 				break;
@@ -312,7 +313,11 @@ void BrickGame::destroyWall()
 	for (int i = 0; i < wallHeight; i++)
 		for (int j = 0; j < wallWidth; j++)
 		{
-			delete Wall[i * wallWidth + j];
+			if (Wall[i * wallWidth + j] != NULL)
+			{
+				delete Wall[i * wallWidth + j];
+				Wall[i * wallWidth + j] = NULL;
+			}
 		}
 }
 
@@ -322,7 +327,7 @@ void BrickGame::randomizeBrickMap()
 	for(int i = 0; i < wallHeight; i++)
 		for (int j = 0; j < wallWidth; j++)
 		{
-			brickMap[i * wallWidth + j] = rand() % 4;
+			brickMap[i * wallWidth + j] = rand() % 5;
 		}
 }
 
@@ -400,14 +405,18 @@ void BrickGame::defaultBall()
 
 void BrickGame::checkProcessCondition()
 {
-	if (life <= -1000)
+	if (life <= 0)
 	{
 		isPlaying = false;
 		isEnd = true;
 	}
 	else if (life > 0 && checkBrickLeft() == 0)
 	{
-		isNext = true;
+		destroyWall();
+		randomizeBrickMap();
+		createWall();
+		newBall.defaultState();
+		//isNext = true;
 	}
 }
 
@@ -418,7 +427,7 @@ int BrickGame::checkBrickLeft()
 	{
 		for (int j = 0; j < wallWidth; j++)
 		{
-			if (Wall[i * wallWidth + j])
+			if (Wall[i * wallWidth + j]->getHP() > 0)
 			{
 				check = 1;
 				break;
@@ -430,6 +439,75 @@ int BrickGame::checkBrickLeft()
 		}
 	}
 	return check;
+}
+
+void BrickGame::restartGame()
+{
+	player.setScore(0);
+	newBall.defaultState();
+	player.defaultState();
+	life = 5;
+}
+
+void BrickGame::processBot()
+{
+	sf::Vector2f pos(newBall.getPosition());
+	sf::Vector2f paddlePos(player.getPosition());
+	sf::Vector2f pSize(player.getSize());
+	if (pos.x > paddlePos.x + pSize.x * (3.f / 4.f) && paddlePos.x + pSize.x < mWidth)
+	{
+		player.setRightState(true);
+		player.setLeftState(false);
+		if (paddlePos.x + pSize.x >= mWidth)
+			player.setPosition(sf::Vector2f(mWidth - 1, paddlePos.y));
+		if (paddlePos.x <= 0)
+			player.setPosition(sf::Vector2f(1, paddlePos.y));
+	}
+	else if (pos.x < paddlePos.x + pSize.x * (1.f / 4.f) && paddlePos.x > 0)
+	{
+		player.setLeftState(true);
+		player.setRightState(false);
+		if (paddlePos.x + pSize.x >= mWidth)
+			player.setPosition(sf::Vector2f(mWidth - pSize.x - 1, paddlePos.y));
+		if (paddlePos.x <= 0)
+			player.setPosition(sf::Vector2f(1, paddlePos.y));
+	}
+	else
+	{
+		player.setRightState(false);
+		player.setLeftState(false);
+	}
+	if (paddlePos.x + pSize.x > mWidth || paddlePos.x < 0)
+	{
+		player.setRightState(false);
+		player.setLeftState(false);
+	}
+}
+
+void BrickGame::brickProcess()
+{
+	for (int i = 0; i < wallHeight; i++)
+	{
+		for (int j = 0; j < wallWidth; j++)
+		{
+			if (Wall[i * wallWidth + j] > 0 && Wall[i * wallWidth + j]->isAlive())
+			{
+				Wall[i * wallWidth + j]->checkCollision(newBall); //Kiểm tra va chạm của từng viên gạch với bóng
+				Wall[i * wallWidth + j]->paddleAction(player); //Hiệu ứng của gạch với người chơi
+				if (Wall[i * wallWidth + j]->getHP() == 0) //Nếu gạch bị phá huỷ thì xoá gạch và thay thế bằng đối tượng gạch mặc định
+				{
+					sf::Vector2f tmp(Wall[i * wallWidth + j]->getPosition());
+					delete Wall[i * wallWidth + j];
+					Wall[i * wallWidth + j] = new Brick;
+					Wall[i * wallWidth + j]->setPosition(tmp);
+				}
+				/*if (Wall[i * wallWidth + j]->getHP() == 0)
+				{
+					player.setScore(player.getScore() + Wall[i * wallWidth + j]->getScore());
+				}*/
+			}
+		}
+	}
 }
 
 

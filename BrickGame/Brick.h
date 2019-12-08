@@ -21,7 +21,7 @@ public:
 	int getScore();
 	void damage();
 	void changeTexture();
-	void paddleAction(Paddle&);
+	virtual void paddleAction(Paddle&);
 	//void ballAction();
 	virtual ~Brick() = default;
 	virtual int getType() { return 0; }

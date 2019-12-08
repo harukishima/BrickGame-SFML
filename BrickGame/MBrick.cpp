@@ -9,3 +9,4 @@ MBrick::MBrick()
 	brickTex[1].loadFromFile("resource\\14-Breakout-Tiles.png");
 	setTexture(brickTex);
 }
+
