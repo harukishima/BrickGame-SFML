@@ -23,9 +23,8 @@ MainMenu::MainMenu()
 	secondText.setString("Endless Mode");
 	secondText.setPosition(sf::Vector2f(firstText.getPosition().x, firstText.getPosition().y + 75));
 
-	thirdText = firstText;
+	thirdText = secondText;
 	thirdText.setString("Hard Mode");
-	thirdText.setPosition(sf::Vector2f(secondText.getPosition().x, secondText.getPosition().y + 75));
 
 	fourthText = firstText;
 	fourthText.setString("Demo");
@@ -119,6 +118,8 @@ void MainMenu::changeState(sf::Keyboard::Key key)
 	{
 		if (mState == 1)
 			mState = 6;
+		else if (mState == 4)
+			mState = 2;
 		else mState--;
 	}
 	if (key == sf::Keyboard::Down)
@@ -127,6 +128,8 @@ void MainMenu::changeState(sf::Keyboard::Key key)
 		{
 			mState = 1;
 		}
+		else if (mState == 2)
+			mState = 4;
 		else mState++;
 	}
 }

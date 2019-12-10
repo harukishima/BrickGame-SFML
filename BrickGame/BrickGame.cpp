@@ -286,7 +286,6 @@ void BrickGame::render()
 		mWindow.draw(mainMenu.title);
 		mWindow.draw(mainMenu.firstText);
 		mWindow.draw(mainMenu.secondText);
-		mWindow.draw(mainMenu.thirdText);
 		mWindow.draw(mainMenu.fourthText);
 		mWindow.draw(mainMenu.fifthText);
 		mWindow.draw(mainMenu.sixthText);
