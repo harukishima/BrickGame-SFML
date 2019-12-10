@@ -132,6 +132,7 @@
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="BrickGame.cpp" />
+    <ClCompile Include="Date.cpp" />
     <ClCompile Include="EndMenu.cpp" />
     <ClCompile Include="HBrick.cpp" />
     <ClCompile Include="main.cpp" />
@@ -143,6 +144,7 @@
     <ClCompile Include="NBrick.cpp" />
     <ClCompile Include="Paddle.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
+    <ClCompile Include="Save.cpp" />
     <ClCompile Include="ScoreBoard.cpp" />
     <ClCompile Include="x2Brick.cpp" />
   </ItemGroup>
@@ -150,6 +152,7 @@
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="BrickGame.h" />
+    <ClInclude Include="Date.h" />
     <ClInclude Include="EndMenu.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="HBrick.h" />
@@ -161,6 +164,7 @@
     <ClInclude Include="NBrick.h" />
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="PauseMenu.h" />
+    <ClInclude Include="Save.h" />
     <ClInclude Include="ScoreBoard.h" />
     <ClInclude Include="x2Brick.h" />
   </ItemGroup>

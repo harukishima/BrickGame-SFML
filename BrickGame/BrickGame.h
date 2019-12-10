@@ -18,6 +18,7 @@
 #include "PauseMenu.h"
 #include "MainMenu.h"
 #include "ScoreBoard.h"
+#include "Save.h"
 
 
 class BrickGame
@@ -74,6 +75,7 @@ private:
 	ScoreBoard highScore;
 	int brickMap[wallHeight * wallWidth];
 	int totalBrick = 0;
+
 	/*{
 		1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1,
