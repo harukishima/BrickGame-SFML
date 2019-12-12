@@ -16,6 +16,7 @@ EndMenu::EndMenu()
 		leftText.setFillColor(sf::Color::White);
 		leftText.setPosition(sf::Vector2f(0, mHeight - 85));
 
+		
 
 		rightText = leftText;
 		rightText.setString("Score Board");
@@ -40,25 +41,23 @@ void EndMenu::updateMenu()
 	{
 	case 1:
 	{
-		leftBox.setFillColor(sf::Color::White);
-		leftBox.setOutlineColor(sf::Color(128, 128, 128));
 		leftText.setFillColor(sf::Color::Red);
 
-		rightBox.setFillColor(sf::Color(128, 128, 128));
-		rightBox.setOutlineColor(sf::Color::White);
 		rightText.setFillColor(sf::Color::White);
 		break;
 	}
 	case 2:
 	{
-		leftBox.setFillColor(sf::Color(128, 128, 128));
-		leftBox.setOutlineColor(sf::Color::White);
 		leftText.setFillColor(sf::Color::White);
-
-		rightBox.setFillColor(sf::Color::White);
-		rightBox.setOutlineColor(sf::Color(128, 128, 128));
 		rightText.setFillColor(sf::Color::Red);
+
 		break;
+	}
+	case 3:
+	{
+		leftText.setFillColor(sf::Color::White);
+		rightText.setFillColor(sf::Color::White);
+
 	}
 	}
 }

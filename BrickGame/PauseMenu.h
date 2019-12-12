@@ -10,7 +10,7 @@ class PauseMenu :public Menu
 private:
 	int mState = 1;
 public:
-	sf::Text upperText, underText;
+	sf::Text upperText, middleText, underText;
 	sf::Font font;
 
 	PauseMenu();

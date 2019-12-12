@@ -20,6 +20,7 @@
 #include "ScoreBoard.h"
 #include "Save.h"
 #include "DifficultyMenu.h"
+#include "SaveLoadMenu.h"
 
 
 
@@ -35,6 +36,8 @@ public:
 	bool isEndlessMode = false;
 	bool isDiff = false;
 	bool isScoreBoard = false;
+	bool isLoad = false;
+	bool isSave = false;
 
 	int process;
 
@@ -63,6 +66,9 @@ private:
 	void loadGame(const std::string&);
 	void readPossibility(const std::string& path, std::vector<int>& possibility);
 	void loadDifficulty();
+	void loadSaveFile(const std::string& path);
+	void applySave(Save&);
+	void createSave(int index);
 	
 	std::vector<int> possibility;
 	Difficulty mode = NORMAL;
@@ -79,6 +85,7 @@ private:
 	sf::Text nextLevel;
 	ScoreBoard highScore;
 	int brickMap[wallHeight * wallWidth];
+	Save* save[7] = { NULL }; int nSave = 7;
 	//int totalBrick = 0;
 
 	
@@ -86,6 +93,7 @@ private:
 	MainMenu mainMenu;
 	PauseMenu pauseMenu;
 	DifficultyMenu diffMenu;
+	SaveLoadMenu svMenu;
 
 };
 

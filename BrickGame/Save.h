@@ -11,21 +11,23 @@
 
 
 
+
 class Save
 {
 public:
 	std::string timeSave;
 	int life;
 	int score;
-	int speed;
+	float speed;
 	sf::Vector2f ballPos, ballDir;
 	int* brickMap = NULL;
+	Difficulty mode;
 
 	Save();
-	Save(const int& life, const int& score, const int& speed, const sf::Vector2f& ballPos, const sf::Vector2f& ballDir, int* brickMap);
+	Save(Difficulty& mode, const int& life, const int& score, const float& speed, const sf::Vector2f& ballPos, const sf::Vector2f& ballDir, int* brickMap);
 	virtual ~Save();
 
-	void loadFromFile(const std::string& path);
+	bool loadFromFile(const std::string& path);
 	void saveToFile(const std::string& path);
 };
 

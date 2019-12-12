@@ -11,7 +11,6 @@ private:
 	int mState = 1;
 public:
 	sf::Text leftText, rightText, resultText;
-	sf::RectangleShape leftBox, rightBox;
 	sf::Font font;
 
 	EndMenu();

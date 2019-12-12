@@ -146,6 +146,7 @@
     <ClCompile Include="Paddle.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="Save.cpp" />
+    <ClCompile Include="SaveLoadMenu.cpp" />
     <ClCompile Include="ScoreBoard.cpp" />
     <ClCompile Include="x2Brick.cpp" />
   </ItemGroup>
@@ -167,6 +168,7 @@
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="Save.h" />
+    <ClInclude Include="SaveLoadMenu.h" />
     <ClInclude Include="ScoreBoard.h" />
     <ClInclude Include="x2Brick.h" />
   </ItemGroup>

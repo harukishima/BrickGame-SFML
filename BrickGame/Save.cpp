@@ -5,7 +5,7 @@ Save::Save()
 	brickMap = NULL;
 }
 
-Save::Save(const int& slife, const int& sscore, const int& sspeed, const sf::Vector2f& sballPos, const sf::Vector2f& sballDir, int* sbrickMap)
+Save::Save(Difficulty& smode, const int& slife, const int& sscore, const float& sspeed, const sf::Vector2f& sballPos, const sf::Vector2f& sballDir, int* sbrickMap)
 {
 	stringstream date;
 	Date cur; cur.Now();
@@ -13,10 +13,11 @@ Save::Save(const int& slife, const int& sscore, const int& sspeed, const sf::Vec
 	std::getline(date, timeSave);
 	life = slife;
 	score = sscore;
-	speed = speed;
+	speed = sspeed;
 	ballPos = sballPos;
 	ballDir = sballDir;
 	brickMap = sbrickMap;
+	mode = smode;
 }
 
 Save::~Save()
@@ -27,19 +28,26 @@ Save::~Save()
 	}
 }
 
-void Save::loadFromFile(const std::string& path)
+bool Save::loadFromFile(const std::string& path)
 {
 	std::ifstream file;
 	file.open(path);
 	if (!file.is_open())
 	{
 		std::cout << "File is not exist" << std::endl;
-		return;
+		return false;
 	}
 	std::string tmp;
 	char delim = ',';
 	std::getline(file, tmp, delim);
 	timeSave = tmp;
+	std::getline(file, tmp, delim);
+	if (tmp == "EASY")
+		mode = EASY;
+	else if (tmp == "NORMAL")
+		mode = NORMAL;
+	else if (tmp == "HARD")
+		mode = HARD;
 	std::getline(file, tmp, delim);
 	life = std::stoi(tmp);
 	std::getline(file, tmp, delim);
@@ -63,6 +71,7 @@ void Save::loadFromFile(const std::string& path)
 			brickMap[i * wallWidth + j] = std::stoi(tmp);
 		}
 	file.close();
+	return true;
 }
 
 void Save::saveToFile(const std::string& path)
@@ -70,7 +79,22 @@ void Save::saveToFile(const std::string& path)
 	std::ofstream file;
 	file.open(path);
 	if (!file.is_open()) return;
-	file << timeSave << "," << life << "," << score << "," << ballPos.x << "," << ballPos.y << "," << ballDir.x << "," << ballDir.y << "," << speed;
+	std::string diff;
+	switch (mode)
+	{
+	case EASY:
+		diff = "EASY";
+		break;
+	case NORMAL:
+		diff = "NORMAL";
+		break;
+	case HARD:
+		diff = "HARD";
+		break;
+	default:
+		break;
+	}
+	file << timeSave << "," << diff << "," << life << "," << score << "," << ballPos.x << "," << ballPos.y << "," << ballDir.x << "," << ballDir.y << "," << speed;
 	for (int i = 0; i < wallHeight; i++)
 		for (int j = 0; j < wallWidth; j++)
 		{

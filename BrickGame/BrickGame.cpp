@@ -4,6 +4,7 @@
 BrickGame::BrickGame() :
 	mWindow(sf::VideoMode(mWidth, mHeight), "Brick Game")
 {
+	mWindow.setKeyRepeatEnabled(false);
 	newBall.defaultState();
 	font.loadFromFile("resource\\Retro Gaming.ttf");
 	scoreText.setFont(font);
@@ -14,6 +15,7 @@ BrickGame::BrickGame() :
 	lifeText.setPosition(sf::Vector2f(400, 15));
 	highScore.load("highscore.txt");
 	readPossibility("Difficulty\\NORMAL.txt", possibility);
+	loadSaveFile("Save");
 	//randomizeBrickMap(); //Tạo ngẫu nhiên tilemap
 	//createWall(); //Xây dựng tường gạch
 	
@@ -83,7 +85,7 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 		if (isDemo && key == sf::Keyboard::Escape)
 		{
 			isPause = true;
-			isDemo = false;
+			//isDemo = false;
 		}
 
 		if (isPressed)
@@ -97,11 +99,10 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 					{
 					case 1:
 					{
-						if (!isEnd && !isPlaying)
-						{
-							isPlaying = true;
-							break;
-						}
+						isLoad = true;
+						isMainMenu = false;
+						svMenu.title.setString("Load game");
+						break;
 					}
 					case 2:
 					{
@@ -150,7 +151,7 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 				}
 
 			}
-			if (isScoreBoard)
+			else if (isScoreBoard)
 			{
 				if (key == sf::Keyboard::Escape)
 				{
@@ -158,7 +159,7 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 					isMainMenu = true;
 				}
 			}
-			if (isEnd)
+			else if (isEnd)
 			{
 				endMenu.changeState(key);
 				restartGame();
@@ -177,7 +178,7 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 					// enter scoreboard
 				}
 			}
-			if (isPause)
+			else if (isPause)
 			{
 				pauseMenu.changeState(key);
 				if (key == sf::Keyboard::Enter)
@@ -186,12 +187,18 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 					{
 						case 1:
 						{
-							saveGame("Save\\savegame1.txt");
+
 							isPlaying = true;
 							isPause = false;
 							break;
 						}
 						case 2:
+						{
+							isPause = false;
+							isSave = true;
+							break;
+						}
+						case 3:
 						{
 							isMainMenu = true;
 							isPlaying = false;
@@ -204,7 +211,7 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 					}
 				}
 			}
-			if (isDiff)
+			else if (isDiff)
 			{
 				diffMenu.changeState(key);
 				if (key == sf::Keyboard::Enter)
@@ -227,6 +234,40 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 				{
 					isDiff = false;
 					isMainMenu = true;
+				}
+			}
+			else if (isLoad)
+			{
+				svMenu.changeState(key);
+				if (key == sf::Keyboard::Enter)
+				{
+					int state = svMenu.getState();
+					if (save[state - 1] != NULL)
+					{
+						applySave(*save[state - 1]);
+						isPlaying = true;
+						isLoad = false;
+						createWall();
+					}
+				}
+				if (key == sf::Keyboard::Escape)
+				{
+					isLoad = false;
+					isMainMenu = true;
+				}
+			}
+			else if (isSave)
+			{
+				svMenu.changeState(key);
+				if (key == sf::Keyboard::Enter)
+				{
+					int state = svMenu.getState();
+					createSave(state - 1);
+				}
+				if (key == sf::Keyboard::Escape)
+				{
+					isSave = false;
+					isPause = true;
 				}
 			}
 		}
@@ -254,7 +295,7 @@ void BrickGame::update(sf::Time TimePerFrame)
 			isNext = false;
 		}*/
 	}
-	if (isDemo)
+	if (isDemo && isPlaying)
 	{
 		processBot();
 	}
@@ -287,6 +328,10 @@ void BrickGame::update(sf::Time TimePerFrame)
 		default:
 			break;
 		}
+	}
+	else if (isLoad || isSave)
+	{
+		svMenu.updateMenu();
 	}
 }
 
@@ -333,6 +378,7 @@ void BrickGame::render()
 	else if (isPause)
 	{
 		mWindow.draw(pauseMenu.upperText);
+		mWindow.draw(pauseMenu.middleText);
 		mWindow.draw(pauseMenu.underText);
 	}
 	else if (isEnd)
@@ -356,6 +402,14 @@ void BrickGame::render()
 		mWindow.draw(diffMenu.firstText);
 		mWindow.draw(diffMenu.secondText);
 		mWindow.draw(diffMenu.thirdText);
+	}
+	else if (isLoad || isSave)
+	{
+		mWindow.draw(svMenu.title);
+		for (int i = 0; i < 7; i++)
+		{
+			mWindow.draw(svMenu.text[i]);
+		}
 	}
 	mWindow.display();
 }
@@ -746,6 +800,52 @@ void BrickGame::loadDifficulty()
 		break;
 	}
 	readPossibility(path, possibility);
+}
+
+void BrickGame::loadSaveFile(const std::string& path)
+{
+	std::string dir = path + "\\savegame", ext = ".txt";
+	for (int i = 0; i < nSave; i++)
+	{
+		if (save[i] != NULL)
+			delete save[i];
+		save[i] = new Save;
+		if (!save[i]->loadFromFile(dir + std::to_string(i + 1) + ext))
+		{
+			delete save[i];
+			save[i] = NULL;
+			svMenu.text[i].setString("Empty");
+		}
+		else
+		{
+			svMenu.text[i].setString(save[i]->timeSave);
+		}
+	}
+}
+
+void BrickGame::applySave(Save& save)
+{
+	newBall.setPosition(save.ballPos);
+	newBall.setDirection(save.ballDir);
+	life = save.life;
+	player.setScore(save.score);
+	newBall.setSpeed(save.speed);
+	mode = save.mode;
+	for (int i = 0; i < wallHeight; i++)
+		for (int j = 0; j < wallWidth; j++)
+		{
+			brickMap[i * wallWidth + j] = save.brickMap[i * wallWidth + j];
+		}
+}
+
+void BrickGame::createSave(int index)
+{
+	if (save[index] != NULL)
+		delete save[index];
+	int* map = exportBrickMap();
+	save[index] = new Save(mode, life, player.getScore(), newBall.getSpeed(), newBall.getPosition(), newBall.getDirection(), map);
+	svMenu.text[index].setString(save[index]->timeSave);
+	save[index]->saveToFile("Save\\savegame" + std::to_string(index + 1) + ".txt");
 }
 
 
