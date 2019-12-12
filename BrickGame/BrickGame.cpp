@@ -194,6 +194,7 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 						}
 						case 2:
 						{
+							svMenu.title.setString("Save game");
 							isPause = false;
 							isSave = true;
 							break;
