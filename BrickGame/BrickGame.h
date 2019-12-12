@@ -74,20 +74,9 @@ private:
 	sf::Text nextLevel;
 	ScoreBoard highScore;
 	int brickMap[wallHeight * wallWidth];
-	int totalBrick = 0;
+	//int totalBrick = 0;
 
-	/*{
-		1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-		1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1,
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-		1, 1, 1, 1, 2, 1, 1, 1, 3, 1, 1, 1,
-		1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1,
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-		1, 0, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1,
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-		1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1,
-		1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-	};*/
+	
 	EndMenu endMenu;
 	MainMenu mainMenu;
 	PauseMenu pauseMenu;
