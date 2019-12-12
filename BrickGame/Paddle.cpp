@@ -16,6 +16,7 @@ void Paddle::defaultState()
 	setSize(sf::Vector2f(100.f, 30.f));
 	setPosition(sf::Vector2f(mWidth / 2.f - getSize().x / 2.f, mHeight - getSize().y - 20));
 	mDirection = sf::Vector2f(0, 0);
+	isLeft = isRight = false;
 	mSpeed = 500;
 }
 
