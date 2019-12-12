@@ -12,4 +12,11 @@ const float maxBallSpeed = 750;
 const int defaultLife = 5;
 
 
+enum Difficulty
+{
+	EASY,
+	NORMAL,
+	HARD
+};
+
 #endif // !__GLOBAL_H__

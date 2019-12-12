@@ -13,6 +13,7 @@ BrickGame::BrickGame() :
 	lifeText.setCharacterSize(30);
 	lifeText.setPosition(sf::Vector2f(400, 15));
 	highScore.load("highscore.txt");
+	readPossibility("Difficulty\\NORMAL.txt", possibility);
 	//randomizeBrickMap(); //Tạo ngẫu nhiên tilemap
 	//createWall(); //Xây dựng tường gạch
 	
@@ -84,11 +85,6 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 			isPause = true;
 			isDemo = false;
 		}
-		if (isHardMode && key == sf::Keyboard::Escape)
-		{
-			isPause = true;
-			isHardMode = false;
-		}
 
 		if (isPressed)
 		{
@@ -121,8 +117,8 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 					case 3:
 					{
 						isMainMenu = false;
-						isPlaying = true;
-						// the left mode
+						// difficulty
+						isDiff = true;
 						break;
 					}
 					case 4:
@@ -208,6 +204,31 @@ void BrickGame::handleInput(sf::Keyboard::Key key, bool isPressed)
 					}
 				}
 			}
+			if (isDiff)
+			{
+				diffMenu.changeState(key);
+				if (key == sf::Keyboard::Enter)
+				{
+					switch (diffMenu.getState())
+					{
+					case 1:
+						mode = EASY;
+						break;
+					case 2:
+						mode = NORMAL;
+						break;
+					case 3:
+						mode = HARD;
+						break;
+					}
+					loadDifficulty();
+				}
+				if (key == sf::Keyboard::Escape)
+				{
+					isDiff = false;
+					isMainMenu = true;
+				}
+			}
 		}
 }
 
@@ -248,6 +269,24 @@ void BrickGame::update(sf::Time TimePerFrame)
 	else if (isEnd)
 	{
 		endMenu.updateMenu();
+	}
+	else if (isDiff)
+	{
+		diffMenu.updateMenu();
+		switch (mode)
+		{
+		case EASY:
+			diffMenu.curDiff.setString("Current mode: EASY");
+			break;
+		case NORMAL:
+			diffMenu.curDiff.setString("Current mode: NORMAL");
+			break;
+		case HARD:
+			diffMenu.curDiff.setString("Current mode: HARD");
+			break;
+		default:
+			break;
+		}
 	}
 }
 
@@ -309,6 +348,14 @@ void BrickGame::render()
 		{
 			mWindow.draw(highScore.scoreText[i]);
 		}
+	}
+	else if (isDiff)
+	{
+		mWindow.draw(diffMenu.title);
+		mWindow.draw(diffMenu.curDiff);
+		mWindow.draw(diffMenu.firstText);
+		mWindow.draw(diffMenu.secondText);
+		mWindow.draw(diffMenu.thirdText);
 	}
 	mWindow.display();
 }
@@ -387,7 +434,7 @@ void BrickGame::randomizeBrickMap()
 		{
 			//brickMap[i * wallWidth + j] = rand() % 6;
 			prob = uniform_distance(gen);
-			if (prob <= 30)
+			/*if (prob <= 30)
 				brickMap[i * wallWidth + j] = 0;
 			else if (prob <= 65)
 				brickMap[i * wallWidth + j] = 1;
@@ -396,6 +443,18 @@ void BrickGame::randomizeBrickMap()
 			else if (prob <= 90)
 				brickMap[i * wallWidth + j] = 3;
 			else if (prob <= 95)
+				brickMap[i * wallWidth + j] = 4;
+			else
+				brickMap[i * wallWidth + j] = 5;*/
+			if (prob <= possibility[0])
+				brickMap[i * wallWidth + j] = 0;
+			else if (prob <= possibility[0] + possibility[1])
+				brickMap[i * wallWidth + j] = 1;
+			else if (prob <= possibility[0] + possibility[1] + possibility[2])
+				brickMap[i * wallWidth + j] = 2;
+			else if (prob <= possibility[0] + possibility[1] + possibility[2] + possibility[3])
+				brickMap[i * wallWidth + j] = 3;
+			else if (prob <= possibility[0] + possibility[1] + possibility[2] + possibility[3] + possibility[4])
 				brickMap[i * wallWidth + j] = 4;
 			else
 				brickMap[i * wallWidth + j] = 5;
@@ -645,6 +704,48 @@ void BrickGame::loadGame(const std::string& path)
 	newBall.setPosition(pos);
 	newBall.setDirection(dir);
 	newBall.setSpeed(speed);
+}
+
+void BrickGame::readPossibility(const std::string& path, std::vector<int>& possibility)
+{
+	ifstream file(path);
+	if (!file.is_open()) return;
+	possibility.clear();
+	std::string tmp;
+	char delim = ',';
+	std::getline(file, tmp, delim);
+	possibility.push_back(std::stoi(tmp));
+	std::getline(file, tmp, delim);
+	possibility.push_back(std::stoi(tmp));
+	std::getline(file, tmp, delim);
+	possibility.push_back(std::stoi(tmp));
+	std::getline(file, tmp, delim);
+	possibility.push_back(std::stoi(tmp));
+	std::getline(file, tmp, delim);
+	possibility.push_back(std::stoi(tmp));
+	std::getline(file, tmp, delim);
+	possibility.push_back(std::stoi(tmp));
+	file.close();
+}
+
+void BrickGame::loadDifficulty()
+{
+	std::string path = "Difficulty\\";
+	switch (mode)
+	{
+	case EASY:
+		path += "EASY.txt";
+		break;
+	case NORMAL:
+		path += "NORMAL.txt";
+		break;
+	case HARD:
+		path += "HARD.txt";
+		break;
+	default:
+		break;
+	}
+	readPossibility(path, possibility);
 }
 
 

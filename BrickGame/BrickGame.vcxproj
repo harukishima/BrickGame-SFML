@@ -133,6 +133,7 @@
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="BrickGame.cpp" />
     <ClCompile Include="Date.cpp" />
+    <ClCompile Include="DifficultyMenu.cpp" />
     <ClCompile Include="EndMenu.cpp" />
     <ClCompile Include="HBrick.cpp" />
     <ClCompile Include="main.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="Brick.h" />
     <ClInclude Include="BrickGame.h" />
     <ClInclude Include="Date.h" />
+    <ClInclude Include="DifficultyMenu.h" />
     <ClInclude Include="EndMenu.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="HBrick.h" />

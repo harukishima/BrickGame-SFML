@@ -19,6 +19,8 @@
 #include "MainMenu.h"
 #include "ScoreBoard.h"
 #include "Save.h"
+#include "DifficultyMenu.h"
+
 
 
 class BrickGame
@@ -31,7 +33,7 @@ public:
 	bool isNext = false;
 	bool isDemo = false;
 	bool isEndlessMode = false;
-	bool isHardMode = false;
+	bool isDiff = false;
 	bool isScoreBoard = false;
 
 	int process;
@@ -59,8 +61,11 @@ private:
 	int* exportBrickMap();
 	void saveGame(const std::string&);
 	void loadGame(const std::string&);
+	void readPossibility(const std::string& path, std::vector<int>& possibility);
+	void loadDifficulty();
 	
-
+	std::vector<int> possibility;
+	Difficulty mode = NORMAL;
 	sf::RenderWindow mWindow;
 	Ball newBall;
 	int life = 3;
@@ -80,6 +85,7 @@ private:
 	EndMenu endMenu;
 	MainMenu mainMenu;
 	PauseMenu pauseMenu;
+	DifficultyMenu diffMenu;
 
 };
 
