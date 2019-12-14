@@ -13,7 +13,9 @@ protected:
 	int HP = 0, hpBar = 0;
 	int score = 0;
 	sf::Texture brickTex[2];
+
 public:
+	sf::Sound ting;
 	Brick();
 	bool isAlive(){return HP;}
 	void checkCollision(Ball&);

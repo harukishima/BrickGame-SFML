@@ -9,6 +9,8 @@ Paddle::Paddle()
 	normal[1].loadFromFile("resource\\51-Breakout-Tiles.png");
 	normal[2].loadFromFile("resource\\52-Breakout-Tiles.png");
 	setTexture(&normal[0]);
+	buff.loadFromFile("resource\\bounce.wav");
+	bounce.setBuffer(buff);
 }
 
 void Paddle::defaultState()
@@ -139,6 +141,7 @@ void Paddle::checkCollision(Ball& ball)
 				dir = MoveableObject::rolateVector(dir, angle);
 			}
 		}
+		bounce.play();
 	}
 	if (pos.y >= paddlePos.y && pos.y <= paddlePos.y + paddleSize.y && pos.x + radius >= paddlePos.x && pos.x - radius <= paddlePos.x + paddleSize.x) //Trái và phải
 	{
@@ -151,10 +154,12 @@ void Paddle::checkCollision(Ball& ball)
 			pos.x = paddlePos.x + paddleSize.x + radius;
 		}
 		dir.x = -dir.x;
+		dir.y = -dir.y;
 		if (ball.getSpeed() < maxBallSpeed)
 		{
 			ball.setSpeed(ball.getSpeed() + ball.getSpeed() * 0.1);
 		}
+		bounce.play();
 	}
 	ball.setPosition(pos);
 	ball.setDirection(dir);

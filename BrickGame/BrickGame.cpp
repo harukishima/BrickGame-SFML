@@ -16,6 +16,8 @@ BrickGame::BrickGame() :
 	highScore.load("highscore.txt");
 	readPossibility("Difficulty\\NORMAL.txt", possibility);
 	loadSaveFile("Save");
+	tingBuff.loadFromFile("resource\\ting.wav");
+	metalBuff.loadFromFile("resource\\metal.wav");
 	//randomizeBrickMap(); //Tạo ngẫu nhiên tilemap
 	//createWall(); //Xây dựng tường gạch
 	
@@ -460,6 +462,10 @@ void BrickGame::createWall()
 			}
 			sf::Vector2f tmp = Wall[i * wallWidth + j]->getSize();
 			Wall[i * wallWidth + j]->setPosition(sf::Vector2f(tmp.x * j, board + tmp.y * i));
+			if(Wall[i * wallWidth + j]->getType() == 5)
+				Wall[i * wallWidth + j]->ting.setBuffer(metalBuff);
+			else
+				Wall[i * wallWidth + j]->ting.setBuffer(tingBuff);
 		}
 	}
 }
@@ -687,6 +693,8 @@ void BrickGame::brickProcess()
 					delete Wall[i * wallWidth + j];
 					Wall[i * wallWidth + j] = new Brick;
 					Wall[i * wallWidth + j]->setPosition(tmp);
+					Wall[i * wallWidth + j]->ting.setBuffer(tingBuff);
+					Wall[i * wallWidth + j]->ting.play();
 				}
 				/*if (Wall[i * wallWidth + j]->getHP() == 0)
 				{

@@ -2,6 +2,7 @@
 #define __PADDLE_H__
 
 #include<SFML\Graphics.hpp>
+#include<SFML\Audio.hpp>
 #include"MoveableObject.h"
 #include"Global.h"
 #include"Ball.h"
@@ -12,6 +13,8 @@ private:
 	bool isLeft = false; //true: paddle move left
 	bool isRight = false; //true: paddle move right
 	int mScore = 0; //Player's score
+	sf::SoundBuffer buff;
+	sf::Sound bounce;
 	sf::Texture normal[3];
 	int i = 0;
 public:

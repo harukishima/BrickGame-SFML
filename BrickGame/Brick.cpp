@@ -28,6 +28,7 @@ void Brick::checkCollision(Ball& ball)
 		}
 		dir.y = -dir.y;
 		damage();
+		ting.play();
 	}
 	if (pos.y >= brickPos.y && pos.y <= brickPos.y + brickSize.y && pos.x + radius >= brickPos.x && pos.x - radius <= brickPos.x + brickSize.x)
 	{
@@ -41,6 +42,7 @@ void Brick::checkCollision(Ball& ball)
 		}
 		dir.x = -dir.x;
 		damage();
+		ting.play();
 	}
 	ball.setPosition(pos);
 	ball.setDirection(dir);

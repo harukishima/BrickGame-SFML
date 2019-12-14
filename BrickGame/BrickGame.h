@@ -2,6 +2,7 @@
 #define __BRICKGAME_H__
 
 #include<SFML/Graphics.hpp>
+#include<SFML/Audio.hpp>
 #include<ctime>
 #include<string>
 #include<random>
@@ -70,6 +71,8 @@ private:
 	void applySave(Save&);
 	void createSave(int index);
 	
+	sf::SoundBuffer tingBuff;
+	sf::SoundBuffer metalBuff;
 	std::vector<int> possibility;
 	Difficulty mode = NORMAL;
 	sf::RenderWindow mWindow;
