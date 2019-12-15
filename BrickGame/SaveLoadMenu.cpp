@@ -15,7 +15,7 @@ SaveLoadMenu::SaveLoadMenu()
 	text[0].setCharacterSize(25);
 	text[0].setString("Empty");
 	text[0].setFillColor(sf::Color::Red);
-	text[0].setPosition(sf::Vector2f(mWidth / 2 - 100, mHeight / 2 - 125));
+	text[0].setPosition(sf::Vector2f(mWidth / 2 - 125, mHeight / 2 - 125));
 
 
 	text[1] = text[0];
